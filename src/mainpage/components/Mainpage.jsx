@@ -12,8 +12,14 @@ import {
   UserinfoToggleMenu,
   FlexBox,
   UserinfoMenuItems,
+  // 프로필 컴포넌트 시작
+  StyledMainpageMyProfile,
+
+  // 섹션 컴포넌트 시작
+  StyledMainpageSection,
 } from "../style/MainpageStyledComponents";
 import { useState } from "react";
+import Profile from "../components/Profile";
 
 const Mainpage = ({ data, error, loading }) => {
   const [menuToggleSwitch, setmenuToggleSwitch] = useState("");
@@ -23,8 +29,9 @@ const Mainpage = ({ data, error, loading }) => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      {/* nav bar */}
       <StyledMainpageNav justify={"space-between"}>
-        <StyledNavLogo src="img/logo2.png" />
+        <StyledNavLogo src="img/big-logo.png" />
         <StyledNavUserinfo className={menuToggleSwitch}>
           <UserinfoImgWrapper>
             <FlexBox justify={"flex-start"}>
@@ -55,7 +62,17 @@ const Mainpage = ({ data, error, loading }) => {
           </UserinfoMenuItems>
         </StyledNavUserinfo>
       </StyledMainpageNav>
-      <StyledMainpageBg></StyledMainpageBg>
+
+      {/* navbar end */}
+
+      <StyledMainpageBg>
+        {/* User My Profile */}
+        <StyledMainpageMyProfile>
+          <Profile userData={data?.userinfo} />
+        </StyledMainpageMyProfile>
+        {/* User My Profile end */}
+        <StyledMainpageSection></StyledMainpageSection>
+      </StyledMainpageBg>
     </ThemeProvider>
   );
 };

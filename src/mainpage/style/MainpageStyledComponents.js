@@ -10,7 +10,8 @@ const StyledMainpageNav = styled(FlexBox)`
   width: 100%;
   height: 5vh;
   min-height: 50px;
-  position: sticky;
+  position: fixed;
+  background: white;
   top: 0;
   border-bottom: 1px solid ${(props) => props.theme.color.__line_c1};
   padding: 0 ${(props) => props.theme.padding.base};
@@ -93,27 +94,12 @@ const UserinfoToggleMenu = styled.div`
     transform: translateY(0px) rotate(-45deg);
     box-shadow: 0 0 ${(props) => props.theme.color.__line_c1};
   }
-  ${(props) => {
-    props.active &&
-      css`
-        &::before {
-          background-color: red;
-        }
-      `;
-  }}
-`;
-
-const StyledMainpageBg = styled.div`
-  width: 100%;
-  height: 90vh;
-  background-color: ${(props) => props.theme.color.__bgColor};
-  padding: 0 ${(props) => props.theme.padding.lg};
 `;
 
 const StyledUserName = styled.span`
   width: 100%;
   color: ${(props) => props.theme.color.__line_c1};
-  font-size: ${(props) => props.theme.font.lg};
+  font-size: ${(props) => props.theme.font.sm};
   margin-left: ${(props) => props.theme.margin.base};
 `;
 
@@ -152,6 +138,34 @@ const UserinfoMenuItems = styled.ul`
     }
   }
 `;
+const StyledMainpageBg = styled.div`
+  width: 100%;
+  height: calc(100vh - 50px);
+  background-color: ${(props) => props.theme.color.__bgColor};
+  padding: 0 ${(props) => props.theme.padding.base};
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+`;
+
+// 프로필 컴포넌트
+
+const StyledMainpageMyProfile = styled.div`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 0px;
+`;
+
+// 섹션 컴포넌트
+const StyledMainpageSection = styled.section`
+  width: 75%;
+  height: 100%;
+  border: 1px solid black;
+`;
+
 export {
   StyledMainpageNav,
   StyledNavLogo,
@@ -162,5 +176,10 @@ export {
   UserinfoImgWrapper,
   UserinfoToggleMenu,
   UserinfoMenuItems,
+  // 프로필 컴포넌트
+  StyledMainpageMyProfile,
+
+  // 섹션 컴포넌트
+  StyledMainpageSection,
   FlexBox,
 };
