@@ -1,0 +1,28 @@
+{
+  "userinfo": [
+    {
+      "id": 1,
+      "username": "test",
+      "nickname": "soo",
+      "profileImg": "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+      "self_intro": "hello"
+    },
+    {
+      "id": 2,
+      "username": "test2",
+      "nickname": "soo2",
+      "profileImg": "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+      "self_intro": "hello"
+    }
+  ],
+  "diary": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "today",
+      "image": "https://biz.chosun.com/resizer/Tk8-T7MR9DB_Idsj_WNl6QDQPvc=/616x0/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosunbiz/DRADET6VE5GQ7JXVXZPYLST6VA.png",
+      "content": "today",
+      "weather": "snow"
+    }
+  ]
+}
