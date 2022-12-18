@@ -1,9 +1,9 @@
-import MainpageContainer from "./mainpage/container/MainpageContainer";
+import Main from '../src/mainpage/Main'
 
 function App() {
   return (
     <div className="App">
-      <MainpageContainer />
+      <Main />
     </div>
   );
 }

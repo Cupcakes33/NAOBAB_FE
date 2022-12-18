@@ -17,7 +17,7 @@ import DiaryCard from "../DiaryCard";
 import MyProfile from "../MyProfile";
 import ToggleNav from "../ToggleNav";
 
-const Mainpage = () => {
+const Main = () => {
   const dispatch = useDispatch();
 
   const { data, error, loading } = useSelector((state) => state.mainpage);
@@ -50,4 +50,4 @@ const Mainpage = () => {
   );
 };
 
-export default Mainpage;
+export default Main;
