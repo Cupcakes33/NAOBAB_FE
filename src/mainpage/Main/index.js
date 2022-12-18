@@ -7,7 +7,7 @@ import {
   StyledMainpageBg,
   StyledMainpageMyProfile,
   StyledMainpageSection,
-} from "../style/MainpageStyledComponents";
+} from "./style";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
