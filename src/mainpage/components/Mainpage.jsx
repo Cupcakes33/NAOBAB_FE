@@ -20,6 +20,7 @@ import {
 } from "../style/MainpageStyledComponents";
 import { useState } from "react";
 import Profile from "../components/Profile";
+import DiaryCard from "../DiaryCard";
 
 const Mainpage = ({ data, error, loading }) => {
   const [menuToggleSwitch, setmenuToggleSwitch] = useState("");
@@ -71,7 +72,9 @@ const Mainpage = ({ data, error, loading }) => {
           <Profile userData={data?.userinfo} />
         </StyledMainpageMyProfile>
         {/* User My Profile end */}
-        <StyledMainpageSection></StyledMainpageSection>
+        <StyledMainpageSection>
+          <DiaryCard />
+        </StyledMainpageSection>
       </StyledMainpageBg>
     </ThemeProvider>
   );

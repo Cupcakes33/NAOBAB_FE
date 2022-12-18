@@ -42,6 +42,8 @@ const StyledProfileContent = styled.div`
   h2 {
     font-size: ${(props) => props.theme.font.lg};
     color: ${(props) => props.theme.color.__line_c1};
+    line-height: 20px;
+    /* self-intro 최대 글자 제한 35 */
     span {
       font-size: ${(props) => props.theme.font.base};
       color: ${(props) => props.theme.color.__icon_c1};
