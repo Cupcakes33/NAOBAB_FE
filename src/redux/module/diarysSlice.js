@@ -34,7 +34,6 @@ export const __getWeather = createAsyncThunk(
       const weather = request.data.weather[0].main;
       const icon = request.data.weather[0].icon;
       const temp = request.data.main.temp;
-      console.log(city, weather, icon, temp);
       return thunkAPI.fulfillWithValue({ city, weather, icon, temp });
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

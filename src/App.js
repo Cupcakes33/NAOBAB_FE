@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { __addDiarys, __getWeather } from "./redux/module/diarysSlice";
 
@@ -8,21 +7,21 @@ function App() {
   //캔버스
   const canvasRef = useRef(null); //useRef 사용
   const contextRef = useRef(null); //캔버스의 드로잉 컨텍스트를 참조
+  //canvas save
 
   const [ctx, setCtx] = useState(); //캔버스의 드로잉 컨텍스트
+  const [color, setColor] = useState("blue");
   const [isDrawing, setIsDrawing] = useState(false);
   //ref.current.
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = window.innerWidth * 0.7;
     canvas.height = window.innerHeight * 0.4;
-
     const context = canvas.getContext("2d");
-    context.strokeStyle = "black"; // 선의 색
+    context.strokeStyle = { color }; // 선의 색
     context.lineWidth = 2.5; // 선의 굵기
     contextRef.current = context;
     setCtx(context);
-
     dispatch(__getWeather());
   }, []);
 
@@ -37,13 +36,14 @@ function App() {
   const drawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     //canvas.getContext('2d')의 값이 있을때
+
     if (ctx) {
       if (!isDrawing) {
-        ctx.beginPath();
-        ctx.moveTo(offsetX, offsetY);
+        ctx.beginPath(); //경로 초기화
+        ctx.moveTo(offsetX, offsetY); //출발점을 좌표로 옮기기
       } else {
-        ctx.lineTo(offsetX, offsetY);
-        ctx.stroke();
+        ctx.lineTo(offsetX, offsetY); //도착점을 좌표로 옮기기
+        ctx.stroke(); //그림
       }
     }
   };
@@ -69,13 +69,13 @@ function App() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(weather);
+    const image = canvasRef.current.toDataURL();
     dispatch(
       __addDiarys({
         id: `diarys_${new Date().getTime() + Math.random()}`,
         title: input.title,
         content: input.content,
-        image: "",
+        image: image,
         weather: {
           city: weather.city,
           weather: weather.weather,
