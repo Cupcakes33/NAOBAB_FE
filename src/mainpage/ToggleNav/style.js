@@ -15,6 +15,7 @@ const StyledNavUserinfo = styled(FlexBox)`
   transition: height 0.5s, width 0.5s;
 
   &.active {
+    position: relative;
     width: 200px;
     height: 400px;
     border-radius: 15px;

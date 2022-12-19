@@ -4,6 +4,7 @@ import { current } from "@reduxjs/toolkit";
 
 const instance = axios.create({
   baseURL: "http://localhost:3001/",
+  headers: { token: "" },
   timeout: 1000,
 });
 
@@ -11,8 +12,9 @@ export const getAsyncUser = createAsyncThunk(
   "main/getAsyncUser",
   async (payload, thunkAPI) => {
     try {
-      const userinfo = await instance.get(`/userinfo/${payload}`);
       const diary = await instance.get(`/diary`);
+      const userinfo = await instance.get(`/userinfo/${payload}`);
+
       if (diary.status === 200 && userinfo.status === 200) {
         return { diary: diary.data, userinfo: userinfo.data };
       } else {
@@ -26,8 +28,10 @@ export const getAsyncUser = createAsyncThunk(
 // export const getAsyncDiary = createAsyncThunk();
 
 const initialState = {
-  userinfo: [],
-  diary: [],
+  data: {
+    diary: [],
+    userinfo: {},
+  },
   loading: false,
   error: true,
 };
@@ -38,7 +42,6 @@ export const mainpageSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getAsyncUser.fulfilled]: (state, action) => {
-      
       return {
         ...state,
         data: action.payload,
@@ -47,10 +50,25 @@ export const mainpageSlice = createSlice({
       };
     },
     [getAsyncUser.pending]: (state, action) => {
-      return { ...state, data: [], loading: true };
+      return {
+        ...state,
+        data: {
+          diary: [],
+          userinfo: {},
+        },
+        loading: true,
+      };
     },
     [getAsyncUser.rejected]: (state, action) => {
-      return { ...state, data: [], loading: false, error: action.error };
+      return {
+        ...state,
+        data: {
+          diary: [],
+          userinfo: {},
+        },
+        loading: false,
+        error: action.error,
+      };
     },
   },
 });

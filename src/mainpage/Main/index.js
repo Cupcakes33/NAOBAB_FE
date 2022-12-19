@@ -23,7 +23,7 @@ const Main = () => {
   const { data, error, loading } = useSelector((state) => state.mainpage);
 
   useEffect(() => {
-    dispatch(getAsyncUser(1));
+    dispatch(getAsyncUser(2));
   }, [dispatch]);
 
   return (
@@ -39,11 +39,11 @@ const Main = () => {
       <StyledMainpageBg>
         {/* User My Profile */}
         <StyledMainpageMyProfile>
-          <MyProfile userData={data?.userinfo} />
+          <MyProfile userData={data.userinfo} />
         </StyledMainpageMyProfile>
         {/* User My Profile end */}
         <StyledMainpageSection>
-          <DiaryCard />
+          {data.diary.length > 0 ? <DiaryCard diaryData={data?.diary} /> : null}
         </StyledMainpageSection>
       </StyledMainpageBg>
     </ThemeProvider>
