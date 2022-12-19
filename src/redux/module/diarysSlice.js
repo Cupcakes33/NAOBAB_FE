@@ -40,7 +40,7 @@ export const __getWeather = createAsyncThunk(
     }
   }
 );
-
+//add diary
 export const __addDiarys = createAsyncThunk(
   "ADD_DIARY",
   async (diary, thunkAPI) => {
@@ -53,12 +53,25 @@ export const __addDiarys = createAsyncThunk(
   }
 );
 
+//get diary
+export const __getDiarys = createAsyncThunk(
+  "get_diary",
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await axios.get("http://localhost:3001/diarys");
+      return thunkAPI.fulfillWithValue(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const diarysSlice = createSlice({
   name: "diarys",
   initialState,
   reducers: {},
   extraReducers: {
-    //weather get
+    //get weather
     [__getWeather.pending]: (state) => {
       state.isLoading = true;
     },
@@ -71,7 +84,7 @@ const diarysSlice = createSlice({
       state.error = action.payload;
     },
 
-    //add
+    //add diary
     [__addDiarys.pending]: (state) => {
       state.isLoading = true;
     },
@@ -80,6 +93,19 @@ const diarysSlice = createSlice({
       state.diarys = [...state.diarys, action.payload];
     },
     [__addDiarys.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    //get diary
+    [__getDiarys.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__getDiarys.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.diarys = action.payload;
+    },
+    [__getDiarys.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },

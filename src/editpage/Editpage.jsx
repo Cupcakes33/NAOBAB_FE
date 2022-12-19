@@ -1,113 +1,69 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { __addDiarys, __getWeather } from "../redux/module/diarysSlice";
+import { __getDiarys } from "../redux/module/diarysSlice";
 
-function Postpage() {
-  //캔버스
-  const canvasRef = useRef(null); //useRef 사용
-  const contextRef = useRef(null); //캔버스의 드로잉 컨텍스트를 참조
-  //canvas save
-
-  const [ctx, setCtx] = useState(); //캔버스의 드로잉 컨텍스트
-  // const [color, setColor] = useState("blue");
-  const [isDrawing, setIsDrawing] = useState(false);
-  //ref.current.
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    canvas.width = window.innerWidth * 0.7;
-    canvas.height = window.innerHeight * 0.4;
-    const context = canvas.getContext("2d");
-    context.strokeStyle = "black"; // 선의 색 {color}
-    context.lineWidth = 2.5; // 선의 굵기
-    contextRef.current = context;
-    setCtx(context);
-    dispatch(__getWeather());
-  }, []);
-
-  const startDrawing = () => {
-    setIsDrawing(true);
-  };
-
-  const finishDrawing = () => {
-    setIsDrawing(false);
-  };
-
-  const drawing = ({ nativeEvent }) => {
-    const { offsetX, offsetY } = nativeEvent;
-    //canvas.getContext('2d')의 값이 있을때
-
-    if (ctx) {
-      if (!isDrawing) {
-        ctx.beginPath(); //경로 초기화
-        ctx.moveTo(offsetX, offsetY); //출발점을 좌표로 옮기기
-      } else {
-        ctx.lineTo(offsetX, offsetY); //도착점을 좌표로 옮기기
-        ctx.stroke(); //그림
-      }
-    }
-  };
-
-  //날씨
-  const weather = useSelector((state) => state.diarys.diary.weather);
-  //날짜
-  const dayList = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  const now = new Date();
-  const nowDate = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`;
-
+function Editpage() {
   //useState
   const dispatch = useDispatch();
-  const [input, setInput] = useState({
-    title: "",
-    content: "",
-  });
+  const { diarys } = useSelector((state) => state.diarys);
+  console.log(diarys);
+  useEffect(() => {
+    dispatch(__getDiarys());
+  }, []);
+  // const [input, setInput] = useState({
+  //   title: "",
+  //   content: "",
+  // });
 
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
-  };
+  // const onChangeHandler = (e) => {
+  //   const { name, value } = e.target;
+  //   setInput({ ...input, [name]: value });
+  // };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    const image = canvasRef.current.toDataURL();
-    dispatch(
-      __addDiarys({
-        id: `diarys_${new Date().getTime() + Math.random()}`,
-        title: input.title,
-        content: input.content,
-        image: image,
-        weather: {
-          city: weather.city,
-          weather: weather.weather,
-          icon: weather.icon,
-          temp: weather.temp,
-        },
-      })
-    );
-    setInput({
-      title: "",
-      content: "",
-    });
-    // navigate("/")
-  };
+  // const editSubmit = () => {
+  //   e.preventDefault();
+  //   const image = canvasRef.current.toDataURL();
+  //   dispatch(
+  //     __addDiarys({
+  //       id: `diarys_${new Date().getTime() + Math.random()}`,
+  //       title: input.title,
+  //       content: input.content,
+  //       image: image,
+  //       weather: {
+  //         city: weather.city,
+  //         weather: weather.weather,
+  //         icon: weather.icon,
+  //         temp: weather.temp,
+  //       },
+  //     })
+  //   );
+  //   setInput({
+  //     title: "",
+  //     content: "",
+  //   });
+  //   // navigate("/")
+  // };
 
   return (
     <>
-      <form onSubmit={onSubmitHandler}>
+      {/* onSubmit={onSubmitHandler} */}
+      <form>
         <StPostContainer>
           <StPostSubContainer>
             <StHeaderContainer>
+              {diarys.map((diary) => {})}
               <StDate>
-                {nowDate}
-                {dayList[now.getDay() - 1]}
+                {/* {nowDate}
+                {dayList[now.getDay() - 1]} */}
               </StDate>
               <StWeather>
-                <img
+                {/* <img
                   src={`http://openweathermap.org/img/wn/${weather?.icon}@2x.png`}
                 />
                 <div>{weather?.weather}</div>
                 <div>{weather?.city}</div>
-                <div>{Math.round(weather?.temp - 273.15)}℃</div>
+                <div>{Math.round(weather?.temp - 273.15)}℃</div> */}
               </StWeather>
             </StHeaderContainer>
             <StTittleContainer>
@@ -119,24 +75,24 @@ function Postpage() {
                 placeholder="제목을 입력해볼까?"
                 type="text"
                 name="title"
-                value={input.title}
-                onChange={onChangeHandler}
+                // value={input.title}
+                // onChange={onChangeHandler}
               ></StInput>
             </StTittleContainer>
 
             <canvas
-              ref={canvasRef}
-              onMouseDown={startDrawing}
-              onMouseUp={finishDrawing}
-              onMouseMove={drawing}
-              onMouseLeave={finishDrawing}
+            // ref={canvasRef}
+            // onMouseDown={startDrawing}
+            // onMouseUp={finishDrawing}
+            // onMouseMove={drawing}
+            // onMouseLeave={finishDrawing}
             ></canvas>
 
             <StTextAreaContainer
               placeholder="일기를 써볼까?"
               name="content"
-              value={input.content}
-              onChange={onChangeHandler}
+              // value={input.content}
+              // onChange={onChangeHandler}
             ></StTextAreaContainer>
             <StButtonContainer>
               <StButton type="submit">작성완료</StButton>
@@ -149,7 +105,7 @@ function Postpage() {
   );
 }
 
-export default Postpage;
+export default Editpage;
 
 const StPostContainer = styled.div`
   max-width: 1000px;
