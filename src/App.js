@@ -1,12 +1,19 @@
-function App() {
+import React from "react";
+import Main from "./mainpage/Main";
+import Postpage from "./postpage/Postpage";
+import LoginPage from "./loginpage/LoginPage";
+import { Routes, Route } from "react-router-dom";
+
+const App = () => {
   return (
-    <div className="App">
-      
-      {/* <img src="img/naobabLogo.png" style={{ width: "200px" }}></img>
-      <img src="img/favicon.ico" style={{ width: "32px" }}></img>
-      <img src="img/weather.png" style={{ width: "100px" }}></img> */}
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/mainpage" element={<Main />} />
+      <Route path="/postpage" element={<Postpage />} />
+      <Route path="/detailpage/:postId" element={<Postpage />} />
+      {/* 수정버튼을 누르면  */}
+    </Routes>
   );
-}
+};
 
 export default App;
