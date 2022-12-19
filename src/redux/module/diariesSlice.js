@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  diarys: [],
+  diaries: [],
   diary: {
     title: "",
     content: "",
@@ -41,11 +41,11 @@ export const __getWeather = createAsyncThunk(
   }
 );
 //add diary
-export const __addDiarys = createAsyncThunk(
+export const __addDiaries = createAsyncThunk(
   "ADD_DIARY",
   async (diary, thunkAPI) => {
     try {
-      await axios.post("http://localhost:3001/diarys", diary);
+      await axios.post("http://localhost:3001/diaries", diary);
       return thunkAPI.fulfillWithValue(diary);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -54,11 +54,11 @@ export const __addDiarys = createAsyncThunk(
 );
 
 //get diary
-export const __getDiarys = createAsyncThunk(
+export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get("http://localhost:3001/diarys");
+      const { data } = await axios.get("http://localhost:3001/diaries");
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -66,8 +66,8 @@ export const __getDiarys = createAsyncThunk(
   }
 );
 
-const diarysSlice = createSlice({
-  name: "diarys",
+const diariesSlice = createSlice({
+  name: "diaries",
   initialState,
   reducers: {},
   extraReducers: {
@@ -85,31 +85,31 @@ const diarysSlice = createSlice({
     },
 
     //add diary
-    [__addDiarys.pending]: (state) => {
+    [__addDiaries.pending]: (state) => {
       state.isLoading = true;
     },
-    [__addDiarys.fulfilled]: (state, action) => {
+    [__addDiaries.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.diarys = [...state.diarys, action.payload];
+      state.diaries = [...state.diaries, action.payload];
     },
-    [__addDiarys.rejected]: (state, action) => {
+    [__addDiaries.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
     //get diary
-    [__getDiarys.pending]: (state) => {
+    [__getDiaries.pending]: (state) => {
       state.isLoading = true;
     },
-    [__getDiarys.fulfilled]: (state, action) => {
+    [__getDiaries.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.diarys = action.payload;
+      state.diaries = action.payload;
     },
-    [__getDiarys.rejected]: (state, action) => {
+    [__getDiaries.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
   },
 });
 
-export default diarysSlice.reducer;
+export default diariesSlice.reducer;

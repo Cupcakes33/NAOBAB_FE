@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { __addDiarys, __getWeather } from "../redux/module/diarysSlice";
+import { __addDiaries, __getWeather } from "../redux/module/diariesSlice";
 
 function Postpage() {
   //캔버스
@@ -15,8 +15,8 @@ function Postpage() {
   //ref.current.
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = window.innerWidth * 0.7;
-    canvas.height = window.innerHeight * 0.4;
+    canvas.width = window.innerWidth * 0.75;
+    canvas.height = window.innerHeight * 0.44;
     const context = canvas.getContext("2d");
     context.strokeStyle = "black"; // 선의 색 {color}
     context.lineWidth = 2.5; // 선의 굵기
@@ -49,7 +49,7 @@ function Postpage() {
   };
 
   //날씨
-  const weather = useSelector((state) => state.diarys.diary.weather);
+  const weather = useSelector((state) => state.diaries.diary.weather);
   //날짜
   const dayList = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   const now = new Date();
@@ -71,8 +71,8 @@ function Postpage() {
     e.preventDefault();
     const image = canvasRef.current.toDataURL();
     dispatch(
-      __addDiarys({
-        id: `diarys_${new Date().getTime() + Math.random()}`,
+      __addDiaries({
+        id: `diaries_${new Date().getTime() + Math.random()}`,
         title: input.title,
         content: input.content,
         image: image,
