@@ -3,8 +3,8 @@ import axios from "axios";
 import { current } from "@reduxjs/toolkit";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3001/",
-  headers: { token: "" },
+  // baseURL: "http://localhost:3001/",
+  baseURL: "http://13.125.255.119/",
   timeout: 1000,
 });
 
@@ -12,8 +12,8 @@ export const getAsyncUser = createAsyncThunk(
   "main/getAsyncUser",
   async (payload, thunkAPI) => {
     try {
-      const diary = await instance.get(`/diary`);
-      const userinfo = await instance.get(`/userinfo/${payload}`);
+      const diary = await instance.get(`api/diary`);
+      const userinfo = await instance.get(`api/userinfo/${payload}`);
 
       if (diary.status === 200 && userinfo.status === 200) {
         return { diary: diary.data, userinfo: userinfo.data };
