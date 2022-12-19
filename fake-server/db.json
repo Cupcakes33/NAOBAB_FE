@@ -1,0 +1,28 @@
+{
+  "diarys": [
+    {
+      "id": "diarys_1671295228346.802",
+      "title": "창원님 고생하셨어요",
+      "content": "으아아악",
+      "image": "",
+      "weather": {
+        "city": "Seoul",
+        "weather": "Clear",
+        "icon": "01n",
+        "temp": 262.58
+      }
+    },
+    {
+      "id": "diarys_1671409042374.3328",
+      "title": "sdfds",
+      "content": "sdfsdfdsfdsf",
+      "image": "",
+      "weather": {
+        "city": "Seoul",
+        "weather": "Clouds",
+        "icon": "03d",
+        "temp": 260.81
+      }
+    }
+  ]
+}
