@@ -80,7 +80,7 @@ const SignUp = () => {
     if (name === "passwordConfirm") {
       if (password !== value) {
         setPasswordConfirmInput("비밀번호 확인이 일치하지 않습니다");
-        setPasswordConfirmInput("", false);
+        setIsPasswordConfirm(false);
       } else {
         setPasswordConfirmInput("");
         setIsPasswordConfirm(true);
