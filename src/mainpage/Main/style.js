@@ -51,7 +51,9 @@ const StyledMainpageMyProfile = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 100px 0px;
+  justify-content: center;
+  align-items: center;
+  
 `;
 
 // 섹션 컴포넌트

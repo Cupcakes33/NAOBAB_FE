@@ -22,7 +22,7 @@ export const signUpUser = createAsyncThunk(
   "signup/signupuser",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post("http://localhost:3000/signup", payload);
+      const res = await axios.post("http://43.201.21.135/api/signup", payload);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -34,7 +34,7 @@ export const signInUser = createAsyncThunk(
   "login/signinuser",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post("http://localhost:3000/login", payload);
+      const res = await axios.post("http://43.201.21.135/api/login", payload);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -65,6 +65,7 @@ const loginSlice = createSlice({
     },
     [signInUser.fulfilled]: (state, action) => {
       state.loading = false;
+      console.log(state);
       state.login = [...state.login, action.payload];
     },
     [signInUser.rejected]: (state, action) => {
