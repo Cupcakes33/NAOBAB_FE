@@ -2,21 +2,23 @@ import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __addDiaries, __getWeather } from "../redux/module/diariesSlice";
+import { useNavigate } from "react-router-dom";
 
 function Postpage() {
   //캔버스
+
   const canvasRef = useRef(null); //useRef 사용
   const contextRef = useRef(null); //캔버스의 드로잉 컨텍스트를 참조
-  //canvas save
 
   const [ctx, setCtx] = useState(); //캔버스의 드로잉 컨텍스트
-  // const [color, setColor] = useState("blue");
+
   const [isDrawing, setIsDrawing] = useState(false);
+
   //ref.current.
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = window.innerWidth * 0.75;
-    canvas.height = window.innerHeight * 0.44;
+    canvas.width = window.innerWidth * 0.66;
+    canvas.height = window.innerHeight * 0.45;
     const context = canvas.getContext("2d");
     context.strokeStyle = "black"; // 선의 색 {color}
     context.lineWidth = 2.5; // 선의 굵기
@@ -62,20 +64,43 @@ function Postpage() {
     content: "",
   });
 
+  const navigate = useNavigate();
+  // const onClickHandler = () => {
+  //   navigate("/mainpage");
+  // };
+
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
+  // dataURL을 Blob으로 변환
+  const dataURItoBlob = (dataURI) => {
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0
+        ? atob(splitDataURI[1])
+        : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++)
+      ia[i] = byteString.charCodeAt(i);
+    return new Blob([ia], { type: mimeString });
+  };
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const image = canvasRef.current.toDataURL();
+    const dataUrl = canvasRef.current.toDataURL("image/png", 0.6);
+    const blob = dataURItoBlob(dataUrl);
+    console.log(blob);
+    let formData = new FormData();
+    formData.append("file", blob, "image.ext");
+
     dispatch(
       __addDiaries({
-        id: `diaries_${new Date().getTime() + Math.random()}`,
         title: input.title,
         content: input.content,
-        image: image,
+        image: JSON.stringify(formData),
         weather: {
           city: weather.city,
           weather: weather.weather,
@@ -88,7 +113,7 @@ function Postpage() {
       title: "",
       content: "",
     });
-    // navigate("/")
+    navigate("/mainpage");
   };
 
   return (
@@ -98,8 +123,7 @@ function Postpage() {
           <StPostSubContainer>
             <StHeaderContainer>
               <StDate>
-                {nowDate}
-                {dayList[now.getDay() - 1]}
+                {nowDate}/{dayList[now.getDay() - 1]}
               </StDate>
               <StWeather>
                 <img
@@ -139,6 +163,7 @@ function Postpage() {
               onChange={onChangeHandler}
             ></StTextAreaContainer>
             <StButtonContainer>
+              {/* onClick={onClickHandler} */}
               <StButton type="submit">작성완료</StButton>
               <StButton>취소</StButton>
             </StButtonContainer>

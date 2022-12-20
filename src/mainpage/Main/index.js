@@ -21,9 +21,9 @@ const Main = () => {
   const dispatch = useDispatch();
 
   const { data, error, loading } = useSelector((state) => state.mainpage);
-
+  console.log(data);
   useEffect(() => {
-    dispatch(getAsyncUser(2));
+    dispatch(getAsyncUser());
   }, [dispatch]);
 
   return (

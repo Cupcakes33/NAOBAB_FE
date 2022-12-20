@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getDiaries } from "../redux/module/diariesSlice";
@@ -9,10 +9,11 @@ function Detailpage() {
   const dispatch = useDispatch();
   const { diaries } = useSelector((state) => state.diaries);
   console.log(diaries);
-  const { id } = useParams();
+  const { diaryId } = useParams();
+
   useEffect(() => {
-    dispatch(__getDiaries(id));
-  }, []);
+    dispatch(__getDiaries(diaryId));
+  }, [dispatch, diaryId]);
 
   return (
     <>
@@ -42,11 +43,11 @@ function Detailpage() {
                   <StTittle>{diary.title}</StTittle>
                 </StTittleContainer>
                 <StCanvas>
-                  <img src={`${diary.image}`} />
+                  <img src={`${JSON.parse(diary.image)}`} />
                 </StCanvas>
                 <StContentContainer>{diary.content}</StContentContainer>
                 <StButtonContainer>
-                  <StButton type="submit">작성완료</StButton>
+                  <StButton>수정</StButton>
                   <StButton>취소</StButton>
                 </StButtonContainer>
               </StPostSubContainer>

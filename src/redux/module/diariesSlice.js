@@ -45,7 +45,34 @@ export const __addDiaries = createAsyncThunk(
   "ADD_DIARY",
   async (diary, thunkAPI) => {
     try {
-      await axios.post("http://localhost:3001/diaries", diary);
+      console.log("들어오긴옴?", diary);
+
+      // for (let key of diary.image.keys()) {
+      //   console.log(key);
+      // }
+      // for (let value of diary.image.values()) {
+      //   console.log(value);
+      // }
+      const response = await axios.post(
+        "http://43.201.21.135/api/diary",
+        {
+          title: diary.title,
+          content: diary.content,
+          image: JSON.parse(diary.image),
+          weather: diary.weather,
+        },
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJpYXQiOjE2NzE1Mzk5MjgsImV4cCI6MTY3MTU0MzUyOH0.U82oX1jRGThSnbIIP0m3kTMGbzxd2zW-fddIh4aD790`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+      );
+      console.log(response);
       return thunkAPI.fulfillWithValue(diary);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -58,7 +85,13 @@ export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get("http://localhost:3001/diaries");
+      const { data } = await axios.get("http://43.201.21.135/api/diary", {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJpYXQiOjE2NzE1Mzk5MjgsImV4cCI6MTY3MTU0MzUyOH0.U82oX1jRGThSnbIIP0m3kTMGbzxd2zW-fddIh4aD790`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(data);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

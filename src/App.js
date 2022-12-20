@@ -11,7 +11,7 @@ const App = () => {
       <Route path="/" element={<LoginPage />} />
       <Route path="/mainpage" element={<Main />} />
       <Route path="/postpage" element={<Postpage />} />
-      <Route path="/detailpage" element={<Detailpage />} />
+      <Route path="/detailpage/:diaryId" element={<Detailpage />} />
       {/* 수정버튼을 누르면  */}
     </Routes>
   );

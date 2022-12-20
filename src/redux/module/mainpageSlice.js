@@ -3,8 +3,13 @@ import axios from "axios";
 import { current } from "@reduxjs/toolkit";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3001/",
-  headers: { token: "" },
+  baseURL: "http://43.201.21.135/api",
+
+  headers: {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJpYXQiOjE2NzE1Mzk5MjgsImV4cCI6MTY3MTU0MzUyOH0.U82oX1jRGThSnbIIP0m3kTMGbzxd2zW-fddIh4aD790`,
+    "Content-Type": "multipart/form-data",
+  },
+
   timeout: 1000,
 });
 
