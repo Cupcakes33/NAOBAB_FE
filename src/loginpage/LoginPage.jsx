@@ -16,7 +16,11 @@ const LoginPage = () => {
 export default LoginPage;
 
 const StLoginPage = styled.div`
+  height: 440px;
+  overflow: hidden;
+  border: 1px solid red;
   display: flex;
+  flex-direction: row;
   justify-content: flex-start;
-  gap: 30px;
+  align-items: center;
 `;

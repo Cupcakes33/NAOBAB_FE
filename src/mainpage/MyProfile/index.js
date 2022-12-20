@@ -9,7 +9,7 @@ import { MdPostAdd } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
 import { BsBookmarkHeartFill } from "react-icons/bs";
 
-const Profile = ({ userData }) => {
+const Profile = ({ userData, diaryLength }) => {
   return (
     <StyledProfileCard>
       <StyledProfileImgWrapper>
@@ -20,23 +20,23 @@ const Profile = ({ userData }) => {
           <h2>
             {userData?.nickname}
             <br />
-            <span>{userData?.self_intro}</span>
+            <span>{userData?.selfIntro}</span>
           </h2>
           <StyledProfileDetail>
             <h3>
               <MdPostAdd />
               <br />
-              <span>342</span>
+              <span>{diaryLength}</span>
             </h3>
             <h3>
               <FaUserFriends />
               <br />
-              <span>342</span>
+              <span>0</span>
             </h3>
             <h3>
               <BsBookmarkHeartFill />
               <br />
-              <span>32</span>
+              <span>0</span>
             </h3>
           </StyledProfileDetail>
         </StyledProfileContent>

@@ -9,7 +9,7 @@ import {
   StyledMainpageSection,
 } from "./style";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAsyncUser } from "../../redux/module/mainpageSlice";
 
@@ -20,8 +20,11 @@ import ToggleNav from "../ToggleNav";
 const Main = () => {
   const dispatch = useDispatch();
 
-  const { data, error, loading } = useSelector((state) => state.mainpage);
-  console.log(data);
+  const { data, error, loading, isSwitch } = useSelector(
+    (state) => state.mainpage
+  );
+  
+
   useEffect(() => {
     dispatch(getAsyncUser());
   }, [dispatch]);
@@ -37,14 +40,23 @@ const Main = () => {
       {/* navbar end */}
 
       <StyledMainpageBg>
-        {/* User My Profile */}
-        <StyledMainpageMyProfile>
-          <MyProfile userData={data.userinfo} />
-        </StyledMainpageMyProfile>
-        {/* User My Profile end */}
-        <StyledMainpageSection>
-          {data.diary.length > 0 ? <DiaryCard diaryData={data?.diary} /> : null}
-        </StyledMainpageSection>
+        {!isSwitch ? (
+          <>
+            <StyledMainpageMyProfile>
+              <MyProfile
+                userData={data?.userinfo}
+                diaryLength={data?.diary.length}
+              />
+            </StyledMainpageMyProfile>
+            <StyledMainpageSection>
+              {data?.diary.length > 0 ? (
+                <DiaryCard diaryData={data?.diary} />
+              ) : null}
+            </StyledMainpageSection>
+          </>
+        ) : (
+          <div>수정페이지 입니다</div>
+        )}
       </StyledMainpageBg>
     </ThemeProvider>
   );

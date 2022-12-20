@@ -4,8 +4,9 @@ const StyledCards = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  gap: 20px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
 `;
 const StyledCard = styled.div`
   width: 100%;
@@ -19,6 +20,12 @@ const StyledCard = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px;
+  &:nth-child(2n-1) {
+    margin-left: 50px;
+  }
+  &:nth-child(2n) {
+    margin-right: 50px;
+  }
 `;
 
 const StyledCardHeart = styled.div`

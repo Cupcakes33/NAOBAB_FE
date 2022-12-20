@@ -8,18 +8,30 @@ import {
 import { BsFillHeartFill } from "react-icons/bs";
 
 const DiaryCard = ({ diaryData }) => {
-  console.log(diaryData);
+  const transrateLocaleDate = (dateString) => {
+    const date = new Date(dateString.slice(0, 10));
+    return date.toLocaleDateString("ko", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <StyledCards>
-      <StyledCard>
-        <StyledCardHeart>
-          <BsFillHeartFill />
-        </StyledCardHeart>
-        <StyledCardTextWrapper>
-          <h1>{diaryData[0].title}</h1>
-          <span>2022년 12월 12일</span>
-        </StyledCardTextWrapper>
-      </StyledCard>
+      {diaryData.map((diary) => {
+        return (
+          <StyledCard key={`diary${diary.diaryId}`}>
+            <StyledCardHeart>
+              <BsFillHeartFill />
+            </StyledCardHeart>
+            <StyledCardTextWrapper>
+              <h1>{diary.title}</h1>
+              <span>{transrateLocaleDate(`${diary.createdAt}`)}</span>
+            </StyledCardTextWrapper>
+          </StyledCard>
+        );
+      })}
     </StyledCards>
   );
 };

@@ -117,7 +117,7 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <StSignUpContainer>
       <StSignUp>
         <h1>Create An Account</h1>
         <form>
@@ -162,20 +162,48 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
+        <StChange>
+          계정이 있으시다면<button>로그인하기</button>
+        </StChange>
       </StSignUp>
-    </div>
+      <StImg />
+    </StSignUpContainer>
   );
 };
 
 export default SignUp;
 
+const StChange = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  button:active {
+    transform: translateY();
+  }
+`;
+
+const StSignUpContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  transform: translateY(220px);
+`;
+
+const StImg = styled.div`
+  border-radius: 10px;
+  background-image: url("https://post-phinf.pstatic.net/MjAyMTAxMTVfMTcz/MDAxNjEwNjk1MjAyMzk5.ZWxcQ1RJUhYvXDdDcWks1VZ8mfb0SQkG4X8v4_XShPQg.dH1mPBtYKoJxEFMkQlHmfvScRltPgKGZq-CwdsO-Pggg.JPEG/tid350t000049_l.jpg?type=w1200");
+  width: 440px;
+  height: 440px;
+  background-size: cover;
+`;
+
 const StSignUp = styled.div`
   border: 5px solid grey;
   border-radius: 10px;
-  width: 400px;
-  height: 500px;
+  width: 440px;
+  height: 440px;
   h1 {
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 30px;
     text-align: center;
   }
   form {
@@ -197,7 +225,7 @@ const StSignUp = styled.div`
       }
     }
     p {
-      height: 18px;
+      height: 20px;
     }
     button {
       border: 0;
