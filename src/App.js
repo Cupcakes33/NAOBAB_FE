@@ -3,14 +3,17 @@ import Main from "./mainpage/Main";
 import Postpage from "./postpage/Postpage";
 import LoginPage from "./loginpage/LoginPage";
 import { Routes, Route } from "react-router-dom";
+import PrivateRoutes from "./loginpage/PrivateRoutes";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
-      <Route path="/mainpage" element={<Main />} />
-      <Route path="/postpage" element={<Postpage />} />
-      <Route path="/detailpage/:postId" element={<Postpage />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/mainpage" element={<Main />} />
+        <Route path="/postpage" element={<Postpage />} />
+        <Route path="/detailpage/:postId" element={<Postpage />} />
+      </Route>
       {/* 수정버튼을 누르면  */}
     </Routes>
   );
