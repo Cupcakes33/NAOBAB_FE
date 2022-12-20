@@ -48,6 +48,29 @@ export const getAsyncUser = createAsyncThunk(
   }
 );
 
+export const putAsyncUserNickname = createAsyncThunk(
+  "main/putAsyncUserNickname",
+  async (payload, thunkAPI) => {
+    try {
+      const nickname = await instance.put(`api/userinfo`, {
+        nickname: payload,
+      });
+      if (nickname.status === 201) {
+      }
+    } catch (error) {}
+  }
+);
+export const putAsyncUserSelfIntro = createAsyncThunk(
+  "main/putAsyncUserSelfIntro",
+  async (payload, thunkAPI) => {
+    try {
+      const selfIntro = await instance.put(`api/userinfo`, {
+        selfIntro: payload,
+      });
+    } catch (error) {}
+  }
+);
+
 const initialState = {
   data: {
     diary: [],
@@ -55,17 +78,15 @@ const initialState = {
   },
   loading: false,
   error: true,
-  isSwitch: false,
+  isUpdateSwitch: true,
 };
 
 export const mainpageSlice = createSlice({
   name: "mainpage",
   initialState,
   reducers: {
-    toggleSwitch: (state, action) => {
-      console.log(current(state));
-      state.isSwitch = !state.isSwitch;
-      console.log(current(state));
+    toggleUpdateSwitch: (state, action) => {
+      state.isUpdateSwitch = !state.isUpdateSwitch;
     },
   },
   extraReducers: {
@@ -98,8 +119,26 @@ export const mainpageSlice = createSlice({
         error: action.error,
       };
     },
+    [putAsyncUserNickname.fulfilled]: (state, action) => {
+      console.log(state, action);
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+        error: false,
+      };
+    },
+    [putAsyncUserNickname.fulfilled]: (state, action) => {
+      console.log(state, action);
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+        error: false,
+      };
+    },
   },
 });
 
-export const { toggleSwitch } = mainpageSlice.actions;
+export const { toggleUpdateSwitch } = mainpageSlice.actions;
 export default mainpageSlice.reducer;

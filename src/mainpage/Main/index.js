@@ -1,14 +1,15 @@
 import { ThemeProvider } from "styled-components";
 import defaultTheme from "../style/theme";
-
 import {
   StyledMainpageNav,
   StyledNavLogo,
   StyledMainpageBg,
   StyledMainpageMyProfile,
   StyledMainpageSection,
+  StyledAddDiaryButton,
 } from "./style";
 
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAsyncUser } from "../../redux/module/mainpageSlice";
@@ -16,13 +17,18 @@ import { getAsyncUser } from "../../redux/module/mainpageSlice";
 import DiaryCard from "../DiaryCard";
 import MyProfile from "../MyProfile";
 import ToggleNav from "../ToggleNav";
+import UpdateUserinfo from "../UpdateUserinfo";
+import CustomButton from "../Components/Button";
 
 const Main = () => {
   const dispatch = useDispatch();
 
-  const { data, error, loading, isSwitch } = useSelector(
+  const navigate = useNavigate();
+  const { data, error, loading, isUpdateSwitch } = useSelector(
+
     (state) => state.mainpage
   );
+  // error.message === "Rejected" && navigate("/");
   
 
   useEffect(() => {
@@ -40,7 +46,7 @@ const Main = () => {
       {/* navbar end */}
 
       <StyledMainpageBg>
-        {!isSwitch ? (
+        {!isUpdateSwitch ? (
           <>
             <StyledMainpageMyProfile>
               <MyProfile
@@ -49,13 +55,15 @@ const Main = () => {
               />
             </StyledMainpageMyProfile>
             <StyledMainpageSection>
+              <StyledAddDiaryButton>다이어리 작성하기</StyledAddDiaryButton>
+
               {data?.diary.length > 0 ? (
                 <DiaryCard diaryData={data?.diary} />
               ) : null}
             </StyledMainpageSection>
           </>
         ) : (
-          <div>수정페이지 입니다</div>
+          <UpdateUserinfo userData={data?.userinfo} />
         )}
       </StyledMainpageBg>
     </ThemeProvider>

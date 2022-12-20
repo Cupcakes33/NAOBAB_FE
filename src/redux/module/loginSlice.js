@@ -21,14 +21,12 @@ export const signUpUser = createAsyncThunk(
   "signup/signupuser",
   async (payload, thunkAPI) => {
     try {
-
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/signup`,
         payload
       );
 
       return thunkAPI.fulfillWithValue(res.data.massage);
-
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -39,7 +37,6 @@ export const signInUser = createAsyncThunk(
   "login/signinuser",
   async (payload, thunkAPI) => {
     try {
-
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/login`,
         payload
@@ -80,7 +77,8 @@ const loginSlice = createSlice({
       state.loading = false;
       // state.login = [...state.login, action.payload];
       alert("로그인이 확인되었습니다!");
-      window.location.replace("http://localhost:3000/mainpage");
+
+      window.location.replace("http://localhost:3008/mainpage");
     },
     [signInUser.rejected]: (state, action) => {
       state.loading = false;
