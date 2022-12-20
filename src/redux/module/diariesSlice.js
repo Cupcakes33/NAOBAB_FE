@@ -89,7 +89,10 @@ export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
+
       const { data } = await axios.get(`api/diary`);
+
+      
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
