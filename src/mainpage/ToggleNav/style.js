@@ -118,7 +118,7 @@ const UserinfoMenuItems = styled.ul`
     transition: color 0.3s;
     cursor: pointer;
     &:hover {
-      color: ${(props) => props.theme.color.__icon_c1};
+      color: ${(props) => props.theme.color.__icon_c2};
     }
   }
 `;

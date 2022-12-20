@@ -36,7 +36,7 @@ const StModal = styled.div`
   justify-content: center;
   align-content: center;
   border-radius: 12px;
-  box-shadow: 2px 2px 6px black;
+  /* box-shadow: 2px 2px 6px black; */
 `;
 const StBackDrop = styled.div`
   position: fixed;

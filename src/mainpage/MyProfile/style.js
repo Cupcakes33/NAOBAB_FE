@@ -9,9 +9,11 @@ const StyledProfileImgWrapper = styled.div`
   transform: translateX(-50%);
   top: -50px;
   border-radius: 20px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+  /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35); */
   overflow: hidden;
   transition: 0.5s;
+  border: 3px solid ${(props) => props.theme.color.__icon_c2};
+
   img {
     position: absolute;
     top: 0;
@@ -72,8 +74,9 @@ const StyledProfileCard = styled.div`
   background: white;
   position: relative;
   border-radius: 20px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+  /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35); */
   transition: 0.5s;
+  border: 3px solid ${(props) => props.theme.color.__line_c1};
 
   &:hover {
     height: 450px;

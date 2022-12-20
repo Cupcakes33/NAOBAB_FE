@@ -11,7 +11,7 @@ import {
 import { MdFace, MdLogout, MdFavorite } from "react-icons/md";
 import Modal from "../Modal";
 import { useDispatch } from "react-redux";
-import { toggleSwitch } from "../../redux/module/mainpageSlice";
+import { toggleUpdateSwitch } from "../../redux/module/mainpageSlice";
 
 const ToggleNav = ({ data }) => {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const ToggleNav = ({ data }) => {
         <UserinfoMenuItems className={menuToggleSwitch}>
           <li
             onClick={() => {
-              dispatch(toggleSwitch());
+              dispatch(toggleUpdateSwitch());
             }}
           >
             <MdFace />

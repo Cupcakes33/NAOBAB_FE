@@ -28,8 +28,6 @@ const color = {
   __word_c1: "#e9f9fb",
 };
 
-
-
 const defaultTheme = {
   margin,
   padding,
