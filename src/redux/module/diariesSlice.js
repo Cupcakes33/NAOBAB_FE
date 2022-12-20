@@ -24,7 +24,7 @@ export const __getWeather = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const api = {
-        key: "e24f562135ff4b7941d7c0737f4fe4d1",
+        key: `${process.env.REACT_APP_WEATHER_KEY}`,
         base: "https://api.openweathermap.org/data/2.5/",
       };
       const request = await axios.get(
