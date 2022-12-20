@@ -22,8 +22,10 @@ export const signUpUser = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await axios.post("http://43.201.21.135/api/signup", payload);
-      // console.log(res);
+
+
       return thunkAPI.fulfillWithValue(res.data.massage);
+
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

@@ -14,9 +14,12 @@ const App = () => {
         <Route path="/postpage" element={<Postpage />} />
         <Route path="/detailpage/:postId" element={<Postpage />} />
       </Route>
-      {/* 수정버튼을 누르면  */}
     </Routes>
   );
 };
 
 export default App;
+
+
+const ProtectedRouter = () => {}
+// 어드민 / 유저 구분해서 라우팅을 할 수 있음
