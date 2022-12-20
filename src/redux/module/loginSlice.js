@@ -21,12 +21,14 @@ export const signUpUser = createAsyncThunk(
   "signup/signupuser",
   async (payload, thunkAPI) => {
     try {
+
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/signup`,
         payload
       );
 
       return thunkAPI.fulfillWithValue(res.data.massage);
+
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -37,12 +39,14 @@ export const signInUser = createAsyncThunk(
   "login/signinuser",
   async (payload, thunkAPI) => {
     try {
+
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/login`,
         payload
       );
       localStorage.clear();
       localStorage.setItem("token", res.data.accessToken);
+
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

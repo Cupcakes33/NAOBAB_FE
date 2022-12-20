@@ -19,10 +19,12 @@ import ToggleNav from "../ToggleNav";
 
 const Main = () => {
   const dispatch = useDispatch();
+
   const { data, error, loading, isSwitch } = useSelector(
     (state) => state.mainpage
   );
   
+
   useEffect(() => {
     dispatch(getAsyncUser());
   }, [dispatch]);
