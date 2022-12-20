@@ -24,7 +24,7 @@ export const __getWeather = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const api = {
-        key: "e24f562135ff4b7941d7c0737f4fe4d1",
+        key: `${process.env.REACT_APP_WEATHER_KEY}`,
         base: "https://api.openweathermap.org/data/2.5/",
       };
       const request = await axios.get(
@@ -85,12 +85,7 @@ export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get("http://43.201.21.135/api/diary", {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJpYXQiOjE2NzE1Mzk5MjgsImV4cCI6MTY3MTU0MzUyOH0.U82oX1jRGThSnbIIP0m3kTMGbzxd2zW-fddIh4aD790`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}`);
       console.log(data);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
