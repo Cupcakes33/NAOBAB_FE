@@ -113,7 +113,7 @@ function Postpage() {
       title: "",
       content: "",
     });
-    navigate("/mainpage");
+    // navigate("/mainpage");
   };
 
   return (

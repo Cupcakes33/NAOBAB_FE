@@ -1,6 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const instance = axios.create({
+  baseURL: `${process.env.REACT_APP_BACKEND_URL}`,
+});
+const getToken = () => {
+  const token = localStorage.getItem("token");
+  return token ? `Bearer ${token}` : null;
+};
+
+instance.interceptors.request.use(async (config) => {
+  config.headers["Authorization"] = getToken();
+  return config;
+});
+
+instance.interceptors.response.use(async (response) => {
+  response.headers["Authorization"] = getToken();
+  return response;
+});
 const initialState = {
   diaries: [],
   diary: {
@@ -46,33 +63,20 @@ export const __addDiaries = createAsyncThunk(
   async (diary, thunkAPI) => {
     try {
       console.log("들어오긴옴?", diary);
+      // await instance.post(`api/diary`, {
+      //   title: diary.title,
+      //   content: diary.content,
+      //   image: JSON.parse(diary.image),
+      //   weather: diary.weather,
+      // });
 
-      // for (let key of diary.image.keys()) {
-      //   console.log(key);
-      // }
-      // for (let value of diary.image.values()) {
-      //   console.log(value);
-      // }
-      const response = await axios.post(
-        "http://43.201.21.135/api/diary",
-        {
-          title: diary.title,
-          content: diary.content,
-          image: JSON.parse(diary.image),
-          weather: diary.weather,
-        },
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJpYXQiOjE2NzE1Mzk5MjgsImV4cCI6MTY3MTU0MzUyOH0.U82oX1jRGThSnbIIP0m3kTMGbzxd2zW-fddIh4aD790`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
+      await instance.post("api/diary", {
+        title: diary.title,
+        content: diary.content,
+        // image: JSON.parse(diary.image),
+        weather: diary.weather,
+      });
 
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
-      );
-      console.log(response);
       return thunkAPI.fulfillWithValue(diary);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -85,13 +89,7 @@ export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get("http://43.201.21.135/api/diary", {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2LCJpYXQiOjE2NzE1Mzk5MjgsImV4cCI6MTY3MTU0MzUyOH0.U82oX1jRGThSnbIIP0m3kTMGbzxd2zW-fddIh4aD790`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(data);
+      const { data } = await axios.get(`api/diary`);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -122,10 +120,14 @@ const diariesSlice = createSlice({
       state.isLoading = true;
     },
     [__addDiaries.fulfilled]: (state, action) => {
+      console.log(state);
+      console.log(action);
       state.isLoading = false;
       state.diaries = [...state.diaries, action.payload];
     },
     [__addDiaries.rejected]: (state, action) => {
+      console.log(state);
+      console.log(action);
       state.isLoading = false;
       state.error = action.payload;
     },
