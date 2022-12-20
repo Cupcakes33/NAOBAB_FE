@@ -10,6 +10,7 @@ let token = localStorage.getItem("token") || "";
 // ProtectedRouter -> ???
 
 const instance = axios.create({
+
   baseURL: "http://43.201.21.135",
   timeout: 1000,
 });
@@ -35,6 +36,7 @@ export const getAsyncUser = createAsyncThunk(
     try {
       const diary = await instance.get(`api/diary`);
       const userinfo = await instance.get(`api/userinfo`);
+
 
       if (diary.status === 200 && userinfo.status === 200) {
         return { diary: diary.data.diaries, userinfo: userinfo.data.userInfo };
