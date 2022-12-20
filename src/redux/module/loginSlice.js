@@ -76,7 +76,7 @@ const loginSlice = createSlice({
       state.loading = false;
       // state.login = [...state.login, action.payload];
       alert("로그인이 확인되었습니다!");
-      // window.location.replace("http://localhost:3000/mainpage");
+      window.location.replace("http://localhost:3001/mainpage");
     },
     [signInUser.rejected]: (state, action) => {
       state.loading = false;
