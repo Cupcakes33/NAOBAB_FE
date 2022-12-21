@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-//라우터 아직 안만들어서 네비게이트 주석처리해놓음!
-//import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { signUpUser } from "../redux/module/loginSlice";
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  //라우터 아직 안만들어서 네비게이트 주석처리해놓음!
-  // const navigate = useNavigate();
 
   //회원가입inputSignUpValue 스테이트 생성
   const [inputSignUpValue, setInputSignUpValue] = useState({
@@ -46,7 +42,7 @@ const SignUp = () => {
 
     if (name === "username") {
       if (!regUsername.test(value)) {
-        setUsernameInput("영문이나 숫자로 6글자 이상이어야합니다", true);
+        setUsernameInput("영문이나 숫자로 6글자 이상이어야합니다");
         setIsUsername(false);
       } else {
         setUsernameInput("");
@@ -56,7 +52,7 @@ const SignUp = () => {
 
     if (name === "nickname") {
       if (!regNickname.test(value)) {
-        setNicknameInput("영문이나 한글로 2글자 이상이어야합니다", true);
+        setNicknameInput("영문이나 한글로 2글자 이상이어야합니다");
         setIsNickname(false);
       } else {
         setNicknameInput("");
@@ -66,10 +62,7 @@ const SignUp = () => {
 
     if (name === "password") {
       if (!regPassword.test(value)) {
-        setPasswordInput(
-          "영문,숫자,특수문자 포함 8글자 이상이어야합니다",
-          true
-        );
+        setPasswordInput("영문,숫자,특수문자 포함 8글자 이상이어야합니다");
         setIsPassword(false);
       } else {
         setPasswordInput("");
@@ -112,8 +105,6 @@ const SignUp = () => {
       password: "",
       passwordConfirm: "",
     });
-    //라우터 아직 안만들어서 네비게이트 주석처리해놓음!
-    // navigate("/");
   };
 
   return (
@@ -162,9 +153,6 @@ const SignUp = () => {
             Sign Up
           </button>
         </form>
-        <StChange>
-          계정이 있으시다면<button>로그인하기</button>
-        </StChange>
       </StSignUp>
       <StImg />
     </StSignUpContainer>
@@ -173,22 +161,24 @@ const SignUp = () => {
 
 export default SignUp;
 
-const StChange = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  button:active {
-    transform: translateY();
+const LoadEffect = keyframes`
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
   }
 `;
 
 const StSignUpContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  transform: translateY(220px);
+  flex-direction: row;
+  gap: 15px;
+  animation: ${LoadEffect} 0.7s ease-in-out;
 `;
 
 const StImg = styled.div`
+  border: 5px solid gray;
   border-radius: 10px;
   background-image: url("https://post-phinf.pstatic.net/MjAyMTAxMTVfMTcz/MDAxNjEwNjk1MjAyMzk5.ZWxcQ1RJUhYvXDdDcWks1VZ8mfb0SQkG4X8v4_XShPQg.dH1mPBtYKoJxEFMkQlHmfvScRltPgKGZq-CwdsO-Pggg.JPEG/tid350t000049_l.jpg?type=w1200");
   width: 440px;
@@ -198,6 +188,7 @@ const StImg = styled.div`
 
 const StSignUp = styled.div`
   border: 5px solid grey;
+  background-color: #f8f7f7;
   border-radius: 10px;
   width: 440px;
   height: 440px;
@@ -214,7 +205,7 @@ const StSignUp = styled.div`
     input {
       border: 0;
       outline: 0;
-      background: $bg-clr;
+      background: white;
       padding: 10px 5px;
       border-radius: 5px;
       padding-left: 10px;
@@ -230,10 +221,16 @@ const StSignUp = styled.div`
     button {
       border: 0;
       outline: 0;
-      background: $bg-clr;
+      background: #a7a4a4;
       padding: 10px 5px;
       border-radius: 5px;
       padding-left: 10px;
+    }
+    button:hover {
+      transform: scale(1.02);
+    }
+    button:active {
+      transform: scale(0.98);
     }
   }
 `;
