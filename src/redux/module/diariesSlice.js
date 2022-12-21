@@ -61,45 +61,34 @@ export const __getWeather = createAsyncThunk(
     }
   }
 );
-//add diary
-export const __addDiaries = createAsyncThunk(
-  "ADD_DIARY",
-  async (data, thunkAPI) => {
-    try {
-      const diary = JSON.parse(data);
-      // console.log([...diary.image]);
-      // console.log(diary.image);
-      // const dd = JSON.parse(diary.image);
-      // console.log([...dd]);
-      // await instance.post(`api/diary`, {
-      //   title: diary.title,
-      //   content: diary.content,
-      //   image: JSON.parse(diary.image),
-      //   weather: diary.weather,
-      // });
+// //add diary
+// export const __addDiaries = createAsyncThunk(
+//   "ADD_DIARY",
+//   async (data, thunkAPI) => {
+//     try {
+//       const diary = JSON.parse(data);
 
-      const diaryData = await instance.post("api/diary", {
-        title: diary.title,
-        content: diary.content,
-        image: diary.image,
-        // weather: diary.weather,
-      });
-      console.log(diaryData);
-      return thunkAPI.fulfillWithValue(diary);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+//       const diaryData = await instance.post("api/diary", {
+//         title: diary.title,
+//         content: diary.content,
+//         image: diary.image,
+//         // weather: diary.weather,
+//       });
+//       return thunkAPI.fulfillWithValue(diary);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error);
+//     }
+//   }
+// );
 
 //get diary
 export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get(`api/diary`);
-
-      return thunkAPI.fulfillWithValue(data);
+      const diary = await instance.get(`api/diary/48`);
+      console.log(diary);
+      return thunkAPI.fulfillWithValue(diary.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -124,22 +113,22 @@ const diariesSlice = createSlice({
       state.error = action.payload;
     },
 
-    //add diary
-    [__addDiaries.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [__addDiaries.fulfilled]: (state, action) => {
-      console.log(state);
-      console.log(action);
-      state.isLoading = false;
-      state.diaries = [...state.diaries, action.payload];
-    },
-    [__addDiaries.rejected]: (state, action) => {
-      console.log(state);
-      console.log(action);
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+    // //add diary
+    // [__addDiaries.pending]: (state) => {
+    //   state.isLoading = true;
+    // },
+    // [__addDiaries.fulfilled]: (state, action) => {
+    //   console.log(state);
+    //   console.log(action);
+    //   state.isLoading = false;
+    //   state.diaries = [...state.diaries, action.payload];
+    // },
+    // [__addDiaries.rejected]: (state, action) => {
+    //   console.log(state);
+    //   console.log(action);
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
 
     //get diary
     [__getDiaries.pending]: (state) => {
@@ -147,7 +136,7 @@ const diariesSlice = createSlice({
     },
     [__getDiaries.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.diaries = action.payload;
+      state.diary = action.payload;
     },
     [__getDiaries.rejected]: (state, action) => {
       state.isLoading = false;

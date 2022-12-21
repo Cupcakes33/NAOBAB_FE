@@ -14,15 +14,13 @@ const App = () => {
       <Route element={<PrivateRoutes />}>
         <Route path="/mainpage" element={<Main />} />
         <Route path="/postpage" element={<Postpage />} />
-        <Route path="/detailpage/:postId" element={<Postpage />} />
+        <Route path="/detailpage/:postId" element={<Detailpage />} />
       </Route>
-
     </Routes>
   );
 };
 
 export default App;
 
-
-const ProtectedRouter = () => {}
+const ProtectedRouter = () => {};
 // 어드민 / 유저 구분해서 라우팅을 할 수 있음

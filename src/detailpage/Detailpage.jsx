@@ -7,52 +7,57 @@ import { useParams } from "react-router-dom";
 function Detailpage() {
   //useState
   const dispatch = useDispatch();
-  const { diaries } = useSelector((state) => state.diaries);
-  console.log(diaries);
+  const { diary } = useSelector((state) => state.diaries.diary);
+  // console.log(JSON.parse(diary.weather.city));
   const { diaryId } = useParams();
-
   useEffect(() => {
     dispatch(__getDiaries(diaryId));
   }, [dispatch, diaryId]);
+
+  const transrateLocaleDate = (dateString) => {
+    const date = new Date(dateString.slice(0, 10));
+    return date.toLocaleDateString("ko", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const weatherAPI = JSON.parse(diary.weather);
+  console.log(weatherAPI.city);
 
   return (
     <>
       <form>
         <StPostContainer>
-          {diaries.map((diary) => {
-            return (
-              <StPostSubContainer>
-                <StHeaderContainer>
-                  <StDate>
-                    {/* {nowDate}
-                {dayList[now.getDay() - 1]} */}
-                  </StDate>
-                  <StWeather>
-                    <img
-                      src={`http://openweathermap.org/img/wn/${diary.weather.icon}@2x.png`}
-                    />
-                    <div>{diary.weather.weather}</div>
-                    <div>{diary.weather.city}</div>
-                    <div>{Math.round(diary.weather.temp - 273.15)}℃</div>
-                  </StWeather>
-                </StHeaderContainer>
+          <StPostSubContainer>
+            <StHeaderContainer>
+              <StDate>{transrateLocaleDate(`${diary.createdAt}`)}</StDate>
+              <StWeather>
+                <img
+                  src={`http://openweathermap.org/img/wn/${weatherAPI.icon}@2x.png`}
+                />
+                <div>{weatherAPI.weather}</div>
+                <div>{weatherAPI.city}</div>
+                <div>{Math.round(weatherAPI.temp - 273.15)}℃</div>
+              </StWeather>
+            </StHeaderContainer>
 
-                <StTittleContainer>
-                  <div>제목:</div>
+            <StTittleContainer>
+              <div>제목:</div>
 
-                  <StTittle>{diary.title}</StTittle>
-                </StTittleContainer>
-                <StCanvas>
-                  <img src={`${JSON.parse(diary.image)}`} />
-                </StCanvas>
-                <StContentContainer>{diary.content}</StContentContainer>
-                <StButtonContainer>
-                  <StButton>수정</StButton>
-                  <StButton>취소</StButton>
-                </StButtonContainer>
-              </StPostSubContainer>
-            );
-          })}
+              <StTittle>{diary.title}</StTittle>
+            </StTittleContainer>
+            <StCanvas>
+              {/* <img src={`${JSON.parse(diary.image)}`} /> */}
+              <img src={diary.image} />
+            </StCanvas>
+            <StContentContainer>{diary.content}</StContentContainer>
+            <StButtonContainer>
+              <StButton>수정</StButton>
+              <StButton>취소</StButton>
+            </StButtonContainer>
+          </StPostSubContainer>
         </StPostContainer>
         ;
       </form>

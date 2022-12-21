@@ -112,38 +112,9 @@ function Postpage() {
       })
     );
 
-    const diaryData = await instance.post(
-      "api/diary",
-      formData
-      
-      // title: input.title,
-      // content: input.content,
-      // image: formData,
-
-      // weather: JSON.stringify({
-      //   city: weather.city,
-      //   weather: weather.weather,
-      //   icon: weather.icon,
-      //   temp: weather.temp,
-      // }),
-    );
+    const diaryData = await instance.post("api/diary", formData);
     console.log(diaryData);
 
-    // dispatch(
-    //   __addDiaries(
-    //     JSON.stringify({
-    //     title: input.title,
-    //     content: input.content,
-    //     image: formData,
-
-    //     weather: {
-    //       city: weather.city,
-    //       weather: weather.weather,
-    //       icon: weather.icon,
-    //       temp: weather.temp,
-    //     },
-    //   }))
-    // );
     setInput({
       title: "",
       content: "",
@@ -217,9 +188,9 @@ const StPostContainer = styled.div`
   height: 100vh;
   margin: 0 auto;
   background-color: #eee;
-  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 `;
 
 const StPostSubContainer = styled.div`
