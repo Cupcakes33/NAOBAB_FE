@@ -70,7 +70,7 @@ const Login = () => {
     <StLoginContainer>
       <StImg />
       <StLogin>
-        <h1>Login</h1>
+        <h1>들어가기</h1>
         <form>
           <input
             type="text"
@@ -92,7 +92,7 @@ const Login = () => {
             onClick={signInHandler}
             disabled={!(isUsername && isPassword)}
           >
-            Sign In
+            로그인
           </button>
         </form>
       </StLogin>
@@ -119,7 +119,7 @@ const StLoginContainer = styled.div`
 `;
 
 const StImg = styled.div`
-  border: 5px solid gray;
+  border: 5px solid #dadde6;
   border-radius: 10px;
   background-image: url("https://post-phinf.pstatic.net/MjAyMTAxMTVfMTcz/MDAxNjEwNjk1MjAyMzk5.ZWxcQ1RJUhYvXDdDcWks1VZ8mfb0SQkG4X8v4_XShPQg.dH1mPBtYKoJxEFMkQlHmfvScRltPgKGZq-CwdsO-Pggg.JPEG/tid350t000049_l.jpg?type=w1200");
   width: 440px;
@@ -128,7 +128,7 @@ const StImg = styled.div`
 `;
 
 const StLogin = styled.div`
-  border: 5px solid grey;
+  border: 5px solid #dadde6;
   background-color: #f8f7f7;
   border-radius: 10px;
   width: 440px;
@@ -160,9 +160,10 @@ const StLogin = styled.div`
       height: 20px;
     }
     button {
+      color: white;
       border: 0;
       outline: 0;
-      background: #a7a4a4;
+      background: #899be6;
       padding: 10px 5px;
       border-radius: 5px;
       padding-left: 10px;

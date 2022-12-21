@@ -110,7 +110,7 @@ const SignUp = () => {
   return (
     <StSignUpContainer>
       <StSignUp>
-        <h1>Create An Account</h1>
+        <h1>가입하기</h1>
         <form>
           <input
             type="text"
@@ -150,7 +150,7 @@ const SignUp = () => {
               !(isUsername && isNickname && isPassword && isPasswordConfirm)
             }
           >
-            Sign Up
+            회원가입
           </button>
         </form>
       </StSignUp>
@@ -178,7 +178,7 @@ const StSignUpContainer = styled.div`
 `;
 
 const StImg = styled.div`
-  border: 5px solid gray;
+  border: 5px solid #dadde6;
   border-radius: 10px;
   background-image: url("https://post-phinf.pstatic.net/MjAyMTAxMTVfMTcz/MDAxNjEwNjk1MjAyMzk5.ZWxcQ1RJUhYvXDdDcWks1VZ8mfb0SQkG4X8v4_XShPQg.dH1mPBtYKoJxEFMkQlHmfvScRltPgKGZq-CwdsO-Pggg.JPEG/tid350t000049_l.jpg?type=w1200");
   width: 440px;
@@ -187,7 +187,7 @@ const StImg = styled.div`
 `;
 
 const StSignUp = styled.div`
-  border: 5px solid grey;
+  border: 5px solid #dadde6;
   background-color: #f8f7f7;
   border-radius: 10px;
   width: 440px;
@@ -219,9 +219,10 @@ const StSignUp = styled.div`
       height: 20px;
     }
     button {
+      color: white;
       border: 0;
       outline: 0;
-      background: #a7a4a4;
+      background: #899be6;
       padding: 10px 5px;
       border-radius: 5px;
       padding-left: 10px;
