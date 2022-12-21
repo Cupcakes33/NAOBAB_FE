@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { __addDiaries, __getWeather } from "../redux/module/diariesSlice";
+import {
+  __addDiaries,
+  __getWeather,
+  instance,
+} from "../redux/module/diariesSlice";
 import { useNavigate } from "react-router-dom";
 
 function Postpage() {
@@ -82,33 +86,64 @@ function Postpage() {
         ? atob(splitDataURI[1])
         : decodeURI(splitDataURI[1]);
     const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-
     const ia = new Uint8Array(byteString.length);
     for (let i = 0; i < byteString.length; i++)
       ia[i] = byteString.charCodeAt(i);
     return new Blob([ia], { type: mimeString });
   };
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    const dataUrl = canvasRef.current.toDataURL("image/png", 0.6);
-    const blob = dataURItoBlob(dataUrl);
-    console.log(blob);
-    let formData = new FormData();
-    formData.append("file", blob, "image.ext");
 
-    dispatch(
-      __addDiaries({
-        title: input.title,
-        content: input.content,
-        image: JSON.stringify(formData),
-        weather: {
-          city: weather.city,
-          weather: weather.weather,
-          icon: weather.icon,
-          temp: weather.temp,
-        },
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    const dataUrl = canvasRef.current.toDataURL("image/png;base64", 0.5);
+
+    const blob = dataURItoBlob(dataUrl);
+
+    let formData = new FormData();
+    formData.append("image", blob, "img.file");
+    formData.append("title", input.title);
+    formData.append("content", input.content);
+    formData.append(
+      "weather",
+      JSON.stringify({
+        city: weather.city,
+        weather: weather.weather,
+        icon: weather.icon,
+        temp: weather.temp,
       })
     );
+
+    const diaryData = await instance.post(
+      "api/diary",
+      formData
+      
+      // title: input.title,
+      // content: input.content,
+      // image: formData,
+
+      // weather: JSON.stringify({
+      //   city: weather.city,
+      //   weather: weather.weather,
+      //   icon: weather.icon,
+      //   temp: weather.temp,
+      // }),
+    );
+    console.log(diaryData);
+
+    // dispatch(
+    //   __addDiaries(
+    //     JSON.stringify({
+    //     title: input.title,
+    //     content: input.content,
+    //     image: formData,
+
+    //     weather: {
+    //       city: weather.city,
+    //       weather: weather.weather,
+    //       icon: weather.icon,
+    //       temp: weather.temp,
+    //     },
+    //   }))
+    // );
     setInput({
       title: "",
       content: "",

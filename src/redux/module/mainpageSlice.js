@@ -24,10 +24,23 @@ instance.interceptors.request.use(async (config) => {
   return config;
 });
 
-instance.interceptors.response.use(async (response) => {
-  response.headers["Authorization"] = getToken();
-  return response;
-});
+instance.interceptors.response.use(
+  (response) => {
+    console.log(response);
+    response.headers["Authorization"] = getToken();
+    console.log("inter");
+    console.log("response status : " + response.status);
+    response.status === 401 && localStorage.removeItem("token");
+    return response;
+    // response return
+    // 리프레쉬 토큰 , 엑세스 토큰
+  },
+  (error) => {
+    console.log(error.response.status);
+    error.response.status === 401 &&
+      window.location.replace("http://localhost:3009/");
+  }
+);
 
 export const getAsyncUser = createAsyncThunk(
   "main/getAsyncUser",

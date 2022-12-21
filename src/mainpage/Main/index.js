@@ -18,23 +18,20 @@ import DiaryCard from "../DiaryCard";
 import MyProfile from "../MyProfile";
 import ToggleNav from "../ToggleNav";
 import UpdateUserinfo from "../UpdateUserinfo";
-import CustomButton from "../Components/Button";
 
 const Main = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const { data, error, loading, isUpdateSwitch } = useSelector(
-
     (state) => state.mainpage
   );
   // error.message === "Rejected" && navigate("/");
-  
 
   useEffect(() => {
     dispatch(getAsyncUser());
   }, [dispatch]);
-
+  console.log(data?.diary);
   return (
     <ThemeProvider theme={defaultTheme}>
       {/* nav bar */}

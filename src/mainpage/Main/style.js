@@ -89,6 +89,7 @@ const StyledMainpageSection = styled.section`
 `;
 
 const StyledAddDiaryButton = styled.button`
+  z-index: 9999;
   position: absolute;
   bottom: calc(50px + ${(props) => props.theme.margin.lg});
   right: ${(props) => props.theme.margin.lg};
@@ -99,7 +100,7 @@ const StyledAddDiaryButton = styled.button`
   padding: ${(props) => props.theme.padding.base};
   cursor: pointer;
   &:hover {
-    animation: ${jelly} .8s both;
+    animation: ${jelly} 0.8s both;
   }
 `;
 
