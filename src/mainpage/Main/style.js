@@ -86,6 +86,9 @@ const StyledMainpageSection = styled.section`
   flex-direction: column;
   padding: 100px 50px;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledAddDiaryButton = styled.button`

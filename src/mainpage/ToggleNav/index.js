@@ -25,8 +25,10 @@ const ToggleNav = ({ data }) => {
       <Modal></Modal>
       <StyledNavUserinfo className={menuToggleSwitch}>
         <UserinfoImgWrapper>
-          <FlexBox justify={"flex-start"}>
-            <StyledUserProfile src={data?.userinfo?.profileImg} />
+          <FlexBox>
+            <FlexBox justify={"flex-start"} width="50px">
+              <StyledUserProfile src={data?.userinfo?.profileImg} />
+            </FlexBox>
             {menuToggleSwitch === "active" ? (
               <StyledUserName>{data?.userinfo?.nickname}</StyledUserName>
             ) : null}

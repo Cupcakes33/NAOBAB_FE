@@ -31,7 +31,7 @@ const Main = () => {
   useEffect(() => {
     dispatch(getAsyncUser());
   }, [dispatch]);
-  console.log(data?.diary);
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       {/* nav bar */}
@@ -60,7 +60,7 @@ const Main = () => {
             </StyledMainpageSection>
           </>
         ) : (
-          <UpdateUserinfo userData={data?.userinfo} />
+          <UpdateUserinfo/>
         )}
       </StyledMainpageBg>
     </ThemeProvider>

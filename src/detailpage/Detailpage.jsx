@@ -8,7 +8,7 @@ function Detailpage() {
   //useState
   const dispatch = useDispatch();
   const { diaries } = useSelector((state) => state.diaries);
-  console.log(diaries);
+  
   const { diaryId } = useParams();
 
   useEffect(() => {

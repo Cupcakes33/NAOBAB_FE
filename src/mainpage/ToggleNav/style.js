@@ -4,6 +4,8 @@ const FlexBox = styled.div`
   display: flex;
   align-items: ${(props) => props.align || "center"};
   justify-content: ${(props) => props.justify || "center"};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
 `;
 
 const StyledNavUserinfo = styled(FlexBox)`
@@ -16,20 +18,19 @@ const StyledNavUserinfo = styled(FlexBox)`
 
   &.active {
     position: relative;
-    width: 200px;
+    width: 250px;
     height: 400px;
     border-radius: 15px;
     background: white;
-    transition: width 0.5s, height 0.5s;
+    transition: width 0.75s, height 0.5s;
     transition-delay: 0s, 0.75s;
   }
 `;
 
 const UserinfoImgWrapper = styled.div`
   position: relative;
-  width: 50px;
-  height: 50px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: transparent;
@@ -38,7 +39,7 @@ const UserinfoImgWrapper = styled.div`
 const StyledUserProfile = styled.img`
   height: 80%;
   width: 80%;
-  border: 1px solid ${(props) => props.theme.color.__line_c1};
+  /* border: 1px solid ${(props) => props.theme.color.__line_c1}; */
   border-radius: 50%;
 `;
 
@@ -81,9 +82,10 @@ const UserinfoToggleMenu = styled.div`
 `;
 
 const StyledUserName = styled.span`
-  width: 100%;
+  width: 100px;
+  height: 100%;
   color: ${(props) => props.theme.color.__line_c1};
-  font-size: ${(props) => props.theme.font.sm};
+  font-size: ${(props) => props.theme.font.base};
   margin-left: ${(props) => props.theme.margin.base};
 `;
 
