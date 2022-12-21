@@ -27,12 +27,11 @@ const Main = () => {
     (state) => state.mainpage
   );
   // error.message === "Rejected" && navigate("/");
-  
 
   useEffect(() => {
     dispatch(getAsyncUser());
   }, [dispatch]);
-
+  console.log(data?.diary);
   return (
     <ThemeProvider theme={defaultTheme}>
       {/* nav bar */}

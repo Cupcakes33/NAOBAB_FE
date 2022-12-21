@@ -25,8 +25,14 @@ instance.interceptors.request.use(async (config) => {
 });
 
 instance.interceptors.response.use(async (response) => {
+  console.log(response);
   response.headers["Authorization"] = getToken();
+  console.log("inter");
+  console.log("response status : " + response.status);
+  response.status === 401 && localStorage.removeItem("token");
   return response;
+  // response return
+  // 리프레쉬 토큰 , 엑세스 토큰
 });
 
 export const getAsyncUser = createAsyncThunk(
