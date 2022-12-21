@@ -90,17 +90,19 @@ function Postpage() {
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const dataUrl = canvasRef.current.toDataURL("image/png", 0.6);
+    const dataUrl = canvasRef.current.toDataURL("image/png", 0.5);
     const blob = dataURItoBlob(dataUrl);
     console.log(blob);
+
     let formData = new FormData();
-    formData.append("file", blob, "image.ext");
+    formData.append("file", blob, "img.file");
 
     dispatch(
       __addDiaries({
         title: input.title,
         content: input.content,
-        image: JSON.stringify(formData),
+        image: formData,
+
         weather: {
           city: weather.city,
           weather: weather.weather,

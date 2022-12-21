@@ -29,6 +29,7 @@ const jelly = keyframes`
 `;
 
 const CustomJellyButton = styled.button`
+  z-index: ${(props) => props.zIndex || 9999};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   display: ${(props) => props.display};

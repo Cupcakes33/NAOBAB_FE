@@ -3,6 +3,10 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND_URL}`,
+  headers: {
+    processData: false,
+    contentType: false,
+  },
 });
 const getToken = () => {
   const token = localStorage.getItem("token");
@@ -62,7 +66,7 @@ export const __addDiaries = createAsyncThunk(
   "ADD_DIARY",
   async (diary, thunkAPI) => {
     try {
-      console.log("들어오긴옴?", diary);
+      console.log(diary.image);
       // await instance.post(`api/diary`, {
       //   title: diary.title,
       //   content: diary.content,
@@ -73,8 +77,8 @@ export const __addDiaries = createAsyncThunk(
       await instance.post("api/diary", {
         title: diary.title,
         content: diary.content,
-        // image: JSON.parse(diary.image),
-        weather: diary.weather,
+        image: diary.image,
+        // weather: diary.weather,
       });
 
       return thunkAPI.fulfillWithValue(diary);
@@ -89,10 +93,8 @@ export const __getDiaries = createAsyncThunk(
   "get_diary",
   async (payload, thunkAPI) => {
     try {
-
       const { data } = await axios.get(`api/diary`);
 
-      
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

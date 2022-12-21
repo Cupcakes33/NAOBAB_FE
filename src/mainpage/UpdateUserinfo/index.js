@@ -27,7 +27,7 @@ const UpdateUserinfo = ({ userData }) => {
     nickname: false,
     selfIntro: false,
   });
-  
+
   const [updateStore, setUpdateStore] = useState({
     nickname: "",
     selfIntro: "",
@@ -36,7 +36,7 @@ const UpdateUserinfo = ({ userData }) => {
   useEffect(() => {
     setUpdateStore({
       nickname: userData.nickname,
-      selfIntro: userData.selfIntro ? userData.selfIntro : "안녕하세욤",
+      selfIntro: userData.selfIntro,
     });
   }, []);
 
@@ -78,7 +78,7 @@ const UpdateUserinfo = ({ userData }) => {
       <StyledUserWrapper>
         {/* header parts */}
         <StyledUserinfoHeader>
-          <p>{userData.nickname} 님의 개인정보에요</p>
+          <p>{userData?.nickname} 님의 개인정보에요</p>
           <StyledIcon
             onClick={() => {
               dispatch(toggleUpdateSwitch());
