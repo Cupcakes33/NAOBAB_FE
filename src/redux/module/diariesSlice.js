@@ -41,7 +41,7 @@ const initialState = {
 
 //날씨API GET
 export const __getWeather = createAsyncThunk(
-  "getWeather",
+  "GET_WHEATHER",
   async (payload, thunkAPI) => {
     try {
       const api = {
@@ -61,34 +61,37 @@ export const __getWeather = createAsyncThunk(
     }
   }
 );
-// //add diary
-// export const __addDiaries = createAsyncThunk(
-//   "ADD_DIARY",
-//   async (data, thunkAPI) => {
-//     try {
-//       const diary = JSON.parse(data);
-
-//       const diaryData = await instance.post("api/diary", {
-//         title: diary.title,
-//         content: diary.content,
-//         image: diary.image,
-//         // weather: diary.weather,
-//       });
-//       return thunkAPI.fulfillWithValue(diary);
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error);
-//     }
-//   }
-// );
 
 //get diary
 export const __getDiaries = createAsyncThunk(
-  "get_diary",
+  "GET_DIARY",
   async (payload, thunkAPI) => {
     try {
       const diary = await instance.get(`api/diary/48`);
       console.log(diary);
       return thunkAPI.fulfillWithValue(diary.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+//put diary
+export const __putDiaries = createAsyncThunk(
+  "PUT_DIARY",
+  async (payload, thunkAPI) => {
+    try {
+      await instance.put(`api/diary/${payload.id}`, {
+        //payload에 제목,내용 수정값이랑 id
+        title: payload.title,
+        content: payload.content,
+      });
+
+      return thunkAPI.fulfillWithValue({
+        id: payload.id,
+        title: payload.title,
+        content: payload.content,
+      });
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -113,23 +116,6 @@ const diariesSlice = createSlice({
       state.error = action.payload;
     },
 
-    // //add diary
-    // [__addDiaries.pending]: (state) => {
-    //   state.isLoading = true;
-    // },
-    // [__addDiaries.fulfilled]: (state, action) => {
-    //   console.log(state);
-    //   console.log(action);
-    //   state.isLoading = false;
-    //   state.diaries = [...state.diaries, action.payload];
-    // },
-    // [__addDiaries.rejected]: (state, action) => {
-    //   console.log(state);
-    //   console.log(action);
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // },
-
     //get diary
     [__getDiaries.pending]: (state) => {
       state.isLoading = true;
@@ -139,6 +125,23 @@ const diariesSlice = createSlice({
       state.diary = action.payload;
     },
     [__getDiaries.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    //put diary
+    [__putDiaries.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__putDiaries.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.diaries = state.diaries.map((el) =>
+        el.id === action.payload.id
+          ? { title: action.payload.title, content: action.payload.content }
+          : el
+      );
+    },
+    [__putDiaries.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
