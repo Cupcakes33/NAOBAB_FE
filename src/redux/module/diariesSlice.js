@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND_URL}`,
   headers: {
     processData: false,
-    contentType: false,
+    contentType: "multipart/form-data",
   },
 });
 const getToken = () => {
@@ -64,9 +64,13 @@ export const __getWeather = createAsyncThunk(
 //add diary
 export const __addDiaries = createAsyncThunk(
   "ADD_DIARY",
-  async (diary, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      console.log(diary.image);
+      const diary = JSON.parse(data);
+      // console.log([...diary.image]);
+      // console.log(diary.image);
+      // const dd = JSON.parse(diary.image);
+      // console.log([...dd]);
       // await instance.post(`api/diary`, {
       //   title: diary.title,
       //   content: diary.content,
@@ -74,13 +78,13 @@ export const __addDiaries = createAsyncThunk(
       //   weather: diary.weather,
       // });
 
-      await instance.post("api/diary", {
+      const diaryData = await instance.post("api/diary", {
         title: diary.title,
         content: diary.content,
         image: diary.image,
         // weather: diary.weather,
       });
-
+      console.log(diaryData);
       return thunkAPI.fulfillWithValue(diary);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
