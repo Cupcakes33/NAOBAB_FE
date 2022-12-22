@@ -30,7 +30,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     error.response.status === 401 &&
-      window.location.replace("http://naobab-fe.vercel.app/");
+      window.location.replace("http://naobab-fe-ky2k.vercel.app/");
   }
 );
 
@@ -60,7 +60,7 @@ export const putAsyncUser = createAsyncThunk(
 
       if (updateUserData.status === 201) {
         alert(updateUserData.data.message);
-        window.location.replace("http://naobab-fe.vercel.app/mainpage");
+        window.location.replace("http://naobab-fe-ky2k.vercel.app/");
       }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
