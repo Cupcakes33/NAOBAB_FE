@@ -9,20 +9,27 @@ import {
   UserinfoMenuItems,
 } from "./style";
 import { MdFace, MdLogout, MdFavorite } from "react-icons/md";
-import Modal from "../Modal";
+
 import { useDispatch } from "react-redux";
 import { toggleUpdateSwitch } from "../../redux/module/mainpageSlice";
+import { useNavigate } from "react-router-dom";
 
 const ToggleNav = ({ data }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [menuToggleSwitch, setmenuToggleSwitch] = useState("");
 
   const menuToggleSwitchHandler = () => {
     !menuToggleSwitch ? setmenuToggleSwitch("active") : setmenuToggleSwitch("");
   };
+
+  const LogoutButtonHandler = () => {
+    alert("로그아웃 되셨습니다!");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   return (
     <>
-      <Modal></Modal>
       <StyledNavUserinfo className={menuToggleSwitch}>
         <UserinfoImgWrapper>
           <FlexBox>
@@ -46,15 +53,15 @@ const ToggleNav = ({ data }) => {
             }}
           >
             <MdFace />
-            <span>My Profile</span>
+            <span>내 정보 보기</span>
           </li>
           <li>
             <MdFavorite />
-            <span>My Favorite</span>
+            <span>내가 좋아하는거</span>
           </li>
           <li>
             <MdLogout />
-            <span>Logout</span>
+            <span onClick={LogoutButtonHandler}>일기 안쓰기</span>
           </li>
         </UserinfoMenuItems>
       </StyledNavUserinfo>

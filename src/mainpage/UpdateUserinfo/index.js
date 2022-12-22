@@ -30,8 +30,7 @@ const UpdateUserinfo = () => {
 
   const userData = data?.userinfo;
   const [isUpdateProfile, setIsUpdateProfile] = useState(false);
-
-  const [profileImgStore, setProfileImgStore] = useState(userData.profileImg);
+  const [profileImgStore, setProfileImgStore] = useState("");
 
   const fileInput = useRef(null);
 
@@ -41,15 +40,33 @@ const UpdateUserinfo = () => {
   });
 
   useEffect(() => {
+    setProfileImgStore(() => {
+      return userData.profileImg;
+    });
+    setUpdateStore(() => {
+      return {
+        nickname: userData.nickname,
+        selfIntro: userData.selfIntro,
+      };
+    });
+  }, [loading]);
+
+  useEffect(() => {
     dispatch(getAsyncUser());
-    !loading &&
-      setUpdateStore(() => {
-        return {
-          nickname: userData?.nickname,
-          selfIntro: userData?.selfIntro,
-        };
-      });
   }, [dispatch]);
+
+  const dataURItoBlob = (dataURI) => {
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0
+        ? atob(splitDataURI[1])
+        : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++)
+      ia[i] = byteString.charCodeAt(i);
+    return new Blob([ia], { type: mimeString });
+  };
 
   const updateInputChangeHandler = (event) => {
     const { value, name } = event.target;
@@ -71,25 +88,16 @@ const UpdateUserinfo = () => {
   };
 
   const selfIntroUpdateSwitchHandler = () => {
-    // dataURL을 Blob으로 변환
-    const dataURItoBlob = (dataURI) => {
-      const splitDataURI = dataURI.split(",");
-      const byteString =
-        splitDataURI[0].indexOf("base64") >= 0
-          ? atob(splitDataURI[1])
-          : decodeURI(splitDataURI[1]);
-      const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-      const ia = new Uint8Array(byteString.length);
-      for (let i = 0; i < byteString.length; i++)
-        ia[i] = byteString.charCodeAt(i);
-      return new Blob([ia], { type: mimeString });
-    };
     const blob = dataURItoBlob(profileImgStore);
+
     let formData = new FormData();
     formData.append("nickname", updateStore.nickname);
     formData.append("selfIntro", updateStore.selfIntro);
-    formData.append("image", blob, "img.file");
-
+    blob.size > 20 && formData.append("image", blob, "img.file");
+    // 조건달기
+    // blob 변환 로직이 항상 실행되서 문제였는데
+    // 실행은 하되 보내지 않도록 변경
+    
     dispatch(putAsyncUser(formData));
   };
 
@@ -107,7 +115,6 @@ const UpdateUserinfo = () => {
       }
     };
     reader.readAsDataURL(e.target.files[0]);
-    console.log(profileImgStore);
   };
   return (
     <StyledUserinfoContainer>
