@@ -4,8 +4,9 @@ const StyledCards = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  gap: 20px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
 `;
 const StyledCard = styled.div`
   width: 100%;
@@ -13,12 +14,18 @@ const StyledCard = styled.div`
   position: relative;
   background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  &:nth-child(2n-1) {
+    margin-left: 50px;
+  }
+  &:nth-child(2n) {
+    margin-right: 50px;
+  }
 `;
 
 const StyledCardHeart = styled.div`
@@ -48,6 +55,7 @@ const StyledCardTextWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
   h1 {
     color: ${(props) => props.theme.color.__icon_c2};
   }

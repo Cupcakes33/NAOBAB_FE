@@ -7,7 +7,6 @@ const initialState = {
       username: "",
       nickname: "",
       password: "",
-      // passwordConfirm: "",
     },
   ],
   login: [
@@ -22,8 +21,12 @@ export const signUpUser = createAsyncThunk(
   "signup/signupuser",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post("http://localhost:3000/signup", payload);
-      return thunkAPI.fulfillWithValue(res.data);
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/signup`,
+        payload
+      );
+
+      return thunkAPI.fulfillWithValue(res.data.massage);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -34,7 +37,13 @@ export const signInUser = createAsyncThunk(
   "login/signinuser",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post("http://localhost:3000/login", payload);
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/login`,
+        payload
+      );
+      localStorage.clear();
+      localStorage.setItem("token", res.data.accessToken);
+
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -49,27 +58,30 @@ const loginSlice = createSlice({
   extraReducers: {
     //회원가입 Sign Up extraReducer
     [signUpUser.pending]: (state) => {
-      state.loading = true;
+      // state.loading = true;
     },
     [signUpUser.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.signup = [...state.signup, action.payload];
+      // state.loading = false;
+      alert("회원가입을 축하합니다!");
     },
     [signUpUser.rejected]: (state, action) => {
-      state.loading = false;
+      // state.loading = false;
       state.error = action.payload;
     },
 
     [signInUser.pending]: (state) => {
-      state.loading = true;
+      // state.loading = true;
     },
     [signInUser.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.login = [...state.login, action.payload];
+      // state.loading = false;
+      // state.login = [...state.login, action.payload];
+      alert("로그인이 확인되었습니다!");
+      window.location.replace("http://naobab-fe.vercel.app/mainpage");
     },
     [signInUser.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
+      // state.loading = false;
+      // state.error = action.payload;
+      alert("로그인 정보가 일치하지 않습니다!");
     },
   },
 });

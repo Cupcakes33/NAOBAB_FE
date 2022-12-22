@@ -1,29 +1,35 @@
 import { ThemeProvider } from "styled-components";
 import defaultTheme from "../style/theme";
-
 import {
   StyledMainpageNav,
   StyledNavLogo,
   StyledMainpageBg,
   StyledMainpageMyProfile,
   StyledMainpageSection,
+  StyledAddDiaryButton,
 } from "./style";
 
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAsyncUser } from "../../redux/module/mainpageSlice";
 
 import DiaryCard from "../DiaryCard";
 import MyProfile from "../MyProfile";
 import ToggleNav from "../ToggleNav";
+import UpdateUserinfo from "../UpdateUserinfo";
 
 const Main = () => {
   const dispatch = useDispatch();
 
-  const { data, error, loading } = useSelector((state) => state.mainpage);
+  const navigate = useNavigate();
+  const { data, error, loading, isUpdateSwitch } = useSelector(
+    (state) => state.mainpage
+  );
+  // error.message === "Rejected" && navigate("/");
 
   useEffect(() => {
-    dispatch(getAsyncUser(2));
+    dispatch(getAsyncUser());
   }, [dispatch]);
 
   return (
@@ -37,14 +43,31 @@ const Main = () => {
       {/* navbar end */}
 
       <StyledMainpageBg>
-        {/* User My Profile */}
-        <StyledMainpageMyProfile>
-          <MyProfile userData={data.userinfo} />
-        </StyledMainpageMyProfile>
-        {/* User My Profile end */}
-        <StyledMainpageSection>
-          {data.diary.length > 0 ? <DiaryCard diaryData={data?.diary} /> : null}
-        </StyledMainpageSection>
+        {!isUpdateSwitch ? (
+          <>
+            <StyledMainpageMyProfile>
+              <MyProfile
+                userData={data?.userinfo}
+                diaryLength={data?.diary.length}
+              />
+            </StyledMainpageMyProfile>
+            <StyledMainpageSection>
+              <StyledAddDiaryButton
+                onClick={() => {
+                  navigate("/postpage");
+                }}
+              >
+                다이어리 작성하기
+              </StyledAddDiaryButton>
+
+              {data?.diary.length > 0 ? (
+                <DiaryCard diaryData={data?.diary} />
+              ) : null}
+            </StyledMainpageSection>
+          </>
+        ) : (
+          <UpdateUserinfo />
+        )}
       </StyledMainpageBg>
     </ThemeProvider>
   );
