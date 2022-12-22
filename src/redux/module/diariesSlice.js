@@ -67,7 +67,8 @@ export const __getDiaries = createAsyncThunk(
   "GET_DIARY",
   async (payload, thunkAPI) => {
     try {
-      const detail = await instance.get(`api/diary/59`);
+      console.log(payload);
+      const detail = await instance.get(`api/diary/${payload}`);
       const diary = detail.data.diary;
       const weatherAPI = JSON.parse(diary.weather);
 
@@ -83,9 +84,9 @@ export const __putDiaries = createAsyncThunk(
   "PUT_DIARY",
   async (payload, thunkAPI) => {
     try {
-      await instance.put(`api/diary/59`, {
+      console.log(payload);
+      await instance.put(`api/diary/${payload.diaryId}`, {
         //payload에 제목,내용 수정값
-
         title: payload.title,
         content: payload.content,
       });
@@ -105,7 +106,9 @@ export const __deleteDiaries = createAsyncThunk(
   "DELETE_DIARY",
   async (payload, thunkAPI) => {
     try {
-      const data = await instance.delete(`api/diary/59`);
+      console.log(payload);
+      const data = await instance.delete(`api/diary/${payload}`);
+      console.log(data);
       if (data.status === 201) {
         alert("일기가 사라졌어요!");
         window.location.replace("http://localhost:3000/mainpage");

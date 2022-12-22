@@ -10,13 +10,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function Detailpage() {
   const dispatch = useDispatch();
-
-  const { diaries } = useSelector((state) => state.diaries);
-  
-
   const navigate = useNavigate();
 
   const { diaryId } = useParams();
+  console.log(diaryId);
   const getDiary = useSelector((state) => state.diaries.diary);
 
   const transrateLocaleDate = (dateString) => {
@@ -38,21 +35,26 @@ function Detailpage() {
     setInput({ ...input, [name]: value });
   };
 
-  const onDeleteDiary = (diaryId) => {
+  const onDeleteDiary = () => {
     dispatch(__deleteDiaries(diaryId));
   };
 
   //수정완료버튼
   const onEditComplete = () => {
-    dispatch(__putDiaries({ title: input.title, content: input.content }));
+    dispatch(
+      __putDiaries({
+        title: input.title,
+        content: input.content,
+        diaryId: diaryId,
+      })
+    );
     // 빈값으로 변경해줘야 일치하는 아이디 없이 input창으로 보여주는거 없애기
     setEditOn(false);
   };
 
   useEffect(() => {
     dispatch(__getDiaries(diaryId));
-    dispatch(__putDiaries({ title: input.title, content: input.content }));
-  }, [{ title: input.title, content: input.content }]);
+  }, [editOn]);
 
   const onClickMainHandler = () => {
     navigate("/mainpage");
@@ -144,6 +146,7 @@ function Detailpage() {
                   수정
                 </StButton>
                 <StButton onClick={onDeleteDiary}>삭제</StButton>
+                <StButton onClick={onClickMainHandler}>메인으로</StButton>
               </StButtonContainer>
             </StPostSubContainer>
           )}
@@ -232,7 +235,7 @@ const StContentContainer = styled.div`
 `;
 
 const StButtonContainer = styled.div`
-  width: 100%;
+  width: 73%;
   height: 5%;
   display: flex;
   align-items: center;
@@ -259,6 +262,8 @@ const StEditInput = styled.input`
   font-size: 1.5rem;
 `;
 const StEditTextArea = styled.textarea`
+  border: none;
+  resize: none;
   width: 100%;
   height: 100%;
   border: 2px solid #d3d3d3;
