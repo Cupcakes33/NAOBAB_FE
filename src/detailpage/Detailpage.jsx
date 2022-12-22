@@ -10,7 +10,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function Detailpage() {
   const dispatch = useDispatch();
+
+  const { diaries } = useSelector((state) => state.diaries);
+  
+
   const navigate = useNavigate();
+
   const { diaryId } = useParams();
   const getDiary = useSelector((state) => state.diaries.diary);
 

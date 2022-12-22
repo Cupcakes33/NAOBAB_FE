@@ -1,4 +1,28 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const jelly = keyframes`
+  0% {
+    transform: scale3d(1,1,1);
+  }
+  30% {
+    transform: scale3d(1.25,0.75,1);
+  }
+  40% {
+    transform: scale3d(0.75,1.25,1);
+  }
+  50% {
+    transform: scale3d(1.15,0.85,1);
+  }
+  65% {
+    transform: scale3d(0.95,1.05,1);
+  }
+  75% {
+    transform: scale3d(1.05,0.95,1);
+  }
+  100% {
+    transform: scale3d(1,1,1);
+  }
+`;
 
 const StyledUserinfoContainer = styled.div`
   width: 100%;
@@ -10,7 +34,9 @@ const StyledUserinfoContainer = styled.div`
 
 const StyledUserWrapper = styled.div`
   width: 70%;
+  min-width: 950px;
   height: 60%;
+  min-height: 550px;
   position: relative;
   border: 3px solid ${(props) => props.theme.color.__icon_c2};
   border-radius: 20px;
@@ -114,6 +140,32 @@ const FlexBox = styled.div`
   align-items: ${(props) => props.align};
   width: ${(props) => props.width || "80%"};
   height: ${(props) => props.height};
+  gap: ${(props) => props.gap};
+`;
+
+const StyledUploadInput = styled.div`
+  label {
+    display: inline-block;
+    font: ${(props) => props.theme.font.base};
+    background: ${(props) => props.theme.color.__icon_c2};
+    color: ${(props) => props.theme.color.__line_c1};
+    border-radius: 10px;
+    border: none;
+    padding: 8px;
+    margin: 10px 0px;
+    cursor: pointer;
+    &:hover {
+      animation: ${jelly} 0.8s both;
+    }
+  }
+  input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+  }
 `;
 export {
   StyledUserinfoContainer,
@@ -126,5 +178,6 @@ export {
   StyledSection,
   StyledInfo,
   StyledInfoUpdateInput,
+  StyledUploadInput,
   FlexBox,
 };

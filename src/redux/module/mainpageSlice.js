@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { current } from "@reduxjs/toolkit";
-let token = localStorage.getItem("token") || "";
 // 쿠키 저장 될 때 ?
 // 로그인 포스트를 보내면 응답 객체에 토큰이 담겨온다.
 // 그 토큰을 셋 스토리지로 로컬스토리지에 저장.
@@ -11,7 +10,6 @@ let token = localStorage.getItem("token") || "";
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND_URL}`,
-  timeout: 1000,
 });
 
 const getToken = () => {
@@ -26,19 +24,13 @@ instance.interceptors.request.use(async (config) => {
 
 instance.interceptors.response.use(
   (response) => {
-    console.log(response);
     response.headers["Authorization"] = getToken();
-    console.log("inter");
-    console.log("response status : " + response.status);
     response.status === 401 && localStorage.removeItem("token");
     return response;
-    // response return
-    // 리프레쉬 토큰 , 엑세스 토큰
   },
   (error) => {
-    console.log(error.response.status);
     error.response.status === 401 &&
-      window.location.replace("http://localhost:3009/");
+      window.location.replace("http://localhost:3000/");
   }
 );
 
@@ -60,26 +52,19 @@ export const getAsyncUser = createAsyncThunk(
   }
 );
 
-export const putAsyncUserNickname = createAsyncThunk(
-  "main/putAsyncUserNickname",
+export const putAsyncUser = createAsyncThunk(
+  "main/putAsyncUser",
   async (payload, thunkAPI) => {
     try {
-      const nickname = await instance.put(`api/userinfo`, {
-        nickname: payload,
-      });
-      if (nickname.status === 201) {
+      const updateUserData = await instance.put(`api/userInfo`, payload);
+
+      if (updateUserData.status === 201) {
+        alert(updateUserData.data.message);
+        window.location.replace("http://localhost:3000/mainpage");
       }
-    } catch (error) {}
-  }
-);
-export const putAsyncUserSelfIntro = createAsyncThunk(
-  "main/putAsyncUserSelfIntro",
-  async (payload, thunkAPI) => {
-    try {
-      const selfIntro = await instance.put(`api/userinfo`, {
-        selfIntro: payload,
-      });
-    } catch (error) {}
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
 );
 
@@ -90,7 +75,7 @@ const initialState = {
   },
   loading: false,
   error: true,
-  isUpdateSwitch: true,
+  isUpdateSwitch: false,
 };
 
 export const mainpageSlice = createSlice({
@@ -129,24 +114,6 @@ export const mainpageSlice = createSlice({
         },
         loading: false,
         error: action.error,
-      };
-    },
-    [putAsyncUserNickname.fulfilled]: (state, action) => {
-      console.log(state, action);
-      return {
-        ...state,
-        data: action.payload,
-        loading: false,
-        error: false,
-      };
-    },
-    [putAsyncUserNickname.fulfilled]: (state, action) => {
-      console.log(state, action);
-      return {
-        ...state,
-        data: action.payload,
-        loading: false,
-        error: false,
       };
     },
   },

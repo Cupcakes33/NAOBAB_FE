@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   StyledUserinfoContainer,
   StyledUserWrapper,
@@ -10,23 +10,29 @@ import {
   StyledSection,
   StyledInfo,
   StyledInfoUpdateInput,
+  StyledUploadInput,
   FlexBox,
 } from "./style";
 import CustomButton from "../Components/Button";
 import { BsFillBackspaceFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  getAsyncUser,
+  putAsyncUser,
   toggleUpdateSwitch,
-  putAsyncUserNickname,
-  putAsyncUserSelfIntro,
 } from "../../redux/module/mainpageSlice";
 
-const UpdateUserinfo = ({ userData }) => {
+const UpdateUserinfo = () => {
   const dispatch = useDispatch();
-  const [isUpdateProfile, setIsUpdateProfile] = useState({
-    nickname: false,
-    selfIntro: false,
-  });
+  const { data, error, loading, isUpdateSwitch } = useSelector(
+    (state) => state.mainpage
+  );
+
+  const userData = data?.userinfo;
+  const [isUpdateProfile, setIsUpdateProfile] = useState(false);
+  const [profileImgStore, setProfileImgStore] = useState("");
+
+  const fileInput = useRef(null);
 
   const [updateStore, setUpdateStore] = useState({
     nickname: "",
@@ -34,44 +40,81 @@ const UpdateUserinfo = ({ userData }) => {
   });
 
   useEffect(() => {
-    setUpdateStore({
-      nickname: userData.nickname,
-      selfIntro: userData.selfIntro,
+    setProfileImgStore(() => {
+      return userData.profileImg;
     });
-  }, []);
+    setUpdateStore(() => {
+      return {
+        nickname: userData.nickname,
+        selfIntro: userData.selfIntro,
+      };
+    });
+  }, [loading]);
 
-  const nicknameChangeHandler = (event) => {
+  useEffect(() => {
+    dispatch(getAsyncUser());
+  }, [dispatch]);
+
+  const dataURItoBlob = (dataURI) => {
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0
+        ? atob(splitDataURI[1])
+        : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++)
+      ia[i] = byteString.charCodeAt(i);
+    return new Blob([ia], { type: mimeString });
+  };
+
+  const updateInputChangeHandler = (event) => {
+    const { value, name } = event.target;
+
     setUpdateStore((prev) => {
-      return { ...prev, nickname: event.target.value };
-    });
-  };
-  const selfIntroChangeHandler = (event) => {
-    setUpdateStore((prev) => {
-      return { ...prev, selfIntro: event.target.value };
-    });
-  };
-
-  const swapSwtich = (item) => {
-    setIsUpdateProfile((prev) => {
-      return { ...prev, [item]: !prev[item] };
+      return {
+        ...prev,
+        [name]: value,
+      };
     });
   };
 
-  const nicknameUpdateSwitchHandler = () => {
-    if (!isUpdateProfile.nickname) {
-      swapSwtich("nickname");
+  const updateSwitchHandler = () => {
+    if (!isUpdateProfile) {
+      setIsUpdateProfile(!isUpdateProfile);
     } else {
-      dispatch(putAsyncUserNickname(updateStore.nickname));
-      swapSwtich("nickname");
+      setIsUpdateProfile(!isUpdateProfile);
     }
   };
+
   const selfIntroUpdateSwitchHandler = () => {
-    if (!isUpdateProfile.selfIntro) {
-      swapSwtich("selfIntro");
+    const blob = dataURItoBlob(profileImgStore);
+
+    let formData = new FormData();
+    formData.append("nickname", updateStore.nickname);
+    formData.append("selfIntro", updateStore.selfIntro);
+    blob.size > 20 && formData.append("image", blob, "img.file");
+    // 조건달기
+    // blob 변환 로직이 항상 실행되서 문제였는데
+    // 실행은 하되 보내지 않도록 변경
+    
+    dispatch(putAsyncUser(formData));
+  };
+
+  const profileImgChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setProfileImgStore(e.target.files[0]);
     } else {
-      dispatch(putAsyncUserSelfIntro(updateStore.selfIntro));
-      swapSwtich("selfIntro");
+      setProfileImgStore(profileImgStore);
+      return;
     }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setProfileImgStore(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
   };
   return (
     <StyledUserinfoContainer>
@@ -91,18 +134,27 @@ const UpdateUserinfo = ({ userData }) => {
         <StyledSection>
           <StyledProfileImgWrapper>
             <StyledProfileImg>
-              <img src={userData?.profileImg}></img>
+              {/* <img src={userData?.profileImg}></img> */}
+              <img
+                style={{ cursor: "pointer" }}
+                src={profileImgStore}
+                onClick={() => {
+                  fileInput.current.click();
+                }}
+              ></img>
             </StyledProfileImg>
-            <CustomButton
-              padding="8px"
-              margin="10px 0px"
-              borderRadius="10px"
-              onClick={() => {
-                console.log(1);
-              }}
-            >
-              사진을 변경할래요
-            </CustomButton>
+            <input
+              type="file"
+              style={{ display: "none" }}
+              accept="image/*"
+              name="profile_img"
+              onChange={profileImgChangeHandler}
+              ref={fileInput}
+            />
+            {/* <StyledUploadInput>
+              <label htmlFor="file">예쁜 내 얼굴 바꾸기</label>
+              <input type="file" id="file" onChange={profileImgChangeHandler}/>
+            </StyledUploadInput> */}
           </StyledProfileImgWrapper>
           {/* detail contents parts */}
           <StyledProfileContentsWrapper>
@@ -113,29 +165,49 @@ const UpdateUserinfo = ({ userData }) => {
             <FlexBox direction="column">
               <FlexBox width="100%" justify="space-between" align="center">
                 <h3>당신의 닉네임은</h3>
-                <CustomButton
-                  padding="8px"
-                  margin="10px 0px"
-                  borderRadius="10px"
-                  onClick={() => {
-                    nicknameUpdateSwitchHandler();
-                  }}
-                >
-                  닉네임을 변경할래요
-                </CustomButton>
               </FlexBox>
-              {isUpdateProfile.nickname ? (
+              {isUpdateProfile ? (
                 <StyledInfoUpdateInput
                   value={updateStore.nickname}
-                  onChange={(event) => nicknameChangeHandler(event)}
+                  name="nickname"
+                  onChange={(event) => updateInputChangeHandler(event)}
                 ></StyledInfoUpdateInput>
               ) : (
-                <StyledInfo>{userData?.nickname}</StyledInfo>
+                <StyledInfo>{updateStore.nickname}</StyledInfo>
               )}
             </FlexBox>
             <FlexBox direction="column">
               <FlexBox width="100%" justify="space-between" align="center">
                 <h3>당신을 소개한다면 ?</h3>
+              </FlexBox>
+
+              {isUpdateProfile ? (
+                <StyledInfoUpdateInput
+                  value={updateStore.selfIntro}
+                  name="selfIntro"
+                  onChange={(event) => updateInputChangeHandler(event)}
+                ></StyledInfoUpdateInput>
+              ) : (
+                <StyledInfo>{updateStore.selfIntro}</StyledInfo>
+              )}
+            </FlexBox>
+            <FlexBox direction="column">
+              <FlexBox
+                width="100%"
+                justify="flex-end"
+                align="center"
+                gap="20px"
+              >
+                <CustomButton
+                  padding="8px"
+                  margin="10px 0px"
+                  borderRadius="10px"
+                  onClick={() => {
+                    updateSwitchHandler();
+                  }}
+                >
+                  개인정보를 수정할래요
+                </CustomButton>
                 <CustomButton
                   padding="8px"
                   margin="10px 0px"
@@ -144,18 +216,9 @@ const UpdateUserinfo = ({ userData }) => {
                     selfIntroUpdateSwitchHandler();
                   }}
                 >
-                  자기소개를 변경할래요
+                  개인정보를 저장할래요
                 </CustomButton>
               </FlexBox>
-
-              {isUpdateProfile.selfIntro ? (
-                <StyledInfoUpdateInput
-                  value={updateStore.selfIntro}
-                  onChange={(event) => selfIntroChangeHandler(event)}
-                ></StyledInfoUpdateInput>
-              ) : (
-                <StyledInfo>{userData?.selfIntro}</StyledInfo>
-              )}
             </FlexBox>
           </StyledProfileContentsWrapper>
         </StyledSection>

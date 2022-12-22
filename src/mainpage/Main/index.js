@@ -31,7 +31,7 @@ const Main = () => {
   useEffect(() => {
     dispatch(getAsyncUser());
   }, [dispatch]);
-  console.log(data?.diary);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       {/* nav bar */}
@@ -52,7 +52,13 @@ const Main = () => {
               />
             </StyledMainpageMyProfile>
             <StyledMainpageSection>
-              <StyledAddDiaryButton>다이어리 작성하기</StyledAddDiaryButton>
+              <StyledAddDiaryButton
+                onClick={() => {
+                  navigate("/postpage");
+                }}
+              >
+                다이어리 작성하기
+              </StyledAddDiaryButton>
 
               {data?.diary.length > 0 ? (
                 <DiaryCard diaryData={data?.diary} />
@@ -60,7 +66,7 @@ const Main = () => {
             </StyledMainpageSection>
           </>
         ) : (
-          <UpdateUserinfo userData={data?.userinfo} />
+          <UpdateUserinfo />
         )}
       </StyledMainpageBg>
     </ThemeProvider>
