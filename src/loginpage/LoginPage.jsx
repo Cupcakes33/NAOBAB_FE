@@ -48,6 +48,8 @@ const StButtonContainer = styled.div`
 `;
 
 const StLoginButton = styled.button`
+  background: #899be6;
+  color: white;
   width: 120px;
   height: 40px;
   font-size: 16px;
@@ -64,6 +66,8 @@ const StLoginButton = styled.button`
 `;
 
 const StSignUpButton = styled.button`
+  background: #899be6;
+  color: white;
   width: 120px;
   height: 40px;
   font-size: 16px;
