@@ -67,9 +67,11 @@ export const __getDiaries = createAsyncThunk(
   "GET_DIARY",
   async (payload, thunkAPI) => {
     try {
-      const diary = await instance.get(`api/diary/48`);
-      console.log(diary);
-      return thunkAPI.fulfillWithValue(diary.data);
+      const detail = await instance.get(`api/diary/59`);
+      const diary = detail.data.diary;
+      const weatherAPI = JSON.parse(diary.weather);
+
+      return thunkAPI.fulfillWithValue({ diary, weatherAPI });
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -81,19 +83,36 @@ export const __putDiaries = createAsyncThunk(
   "PUT_DIARY",
   async (payload, thunkAPI) => {
     try {
-      await instance.put(`api/diary/${payload.id}`, {
-        //payload에 제목,내용 수정값이랑 id
+      await instance.put(`api/diary/59`, {
+        //payload에 제목,내용 수정값
+
         title: payload.title,
         content: payload.content,
       });
 
       return thunkAPI.fulfillWithValue({
-        id: payload.id,
         title: payload.title,
         content: payload.content,
       });
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+//delete diary
+export const __deleteDiaries = createAsyncThunk(
+  "DELETE_DIARY",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await instance.delete(`api/diary/59`);
+      if (data.status === 201) {
+        alert("일기가 사라졌어요!");
+        window.location.replace("http://localhost:3000/mainpage");
+      }
+      return thunkAPI.fulfillWithValue();
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
@@ -135,13 +154,27 @@ const diariesSlice = createSlice({
     },
     [__putDiaries.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.diaries = state.diaries.map((el) =>
-        el.id === action.payload.id
-          ? { title: action.payload.title, content: action.payload.content }
-          : el
-      );
+      state.diaries = {
+        title: action.payload.title,
+        content: action.payload.content,
+      };
     },
     [__putDiaries.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    //delete diary
+    [__deleteDiaries.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__deleteDiaries.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.diaries = state.diaries.filter(
+        (item) => item.id !== action.payload
+      );
+    },
+    [__deleteDiaries.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },

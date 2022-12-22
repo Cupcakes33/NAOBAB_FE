@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 function Postpage() {
+  const navigate = useNavigate();
+
   //캔버스
 
   const canvasRef = useRef(null); //useRef 사용
@@ -68,10 +70,9 @@ function Postpage() {
     content: "",
   });
 
-  const navigate = useNavigate();
-  // const onClickHandler = () => {
-  //   navigate("/mainpage");
-  // };
+  const onClickMainHandler = () => {
+    navigate("/mainpage");
+  };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -119,7 +120,7 @@ function Postpage() {
       title: "",
       content: "",
     });
-    // navigate("/mainpage");
+    navigate("/mainpage");
   };
 
   return (
@@ -169,9 +170,8 @@ function Postpage() {
               onChange={onChangeHandler}
             ></StTextAreaContainer>
             <StButtonContainer>
-              {/* onClick={onClickHandler} */}
               <StButton type="submit">작성완료</StButton>
-              <StButton>취소</StButton>
+              <StButton onClick={onClickMainHandler}>취소</StButton>
             </StButtonContainer>
           </StPostSubContainer>
         </StPostContainer>

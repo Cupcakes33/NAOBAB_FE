@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { __getDiaries, __putDiaries } from "../redux/module/diariesSlice";
-import { useParams } from "react-router-dom";
+import {
+  __getDiaries,
+  __putDiaries,
+  __deleteDiaries,
+} from "../redux/module/diariesSlice";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Detailpage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { diaryId } = useParams();
-  const { diary } = useSelector((state) => state.diaries.diary);
-
-  const weatherAPI = JSON.parse(diary.weather);
+  const getDiary = useSelector((state) => state.diaries.diary);
 
   const transrateLocaleDate = (dateString) => {
     const date = new Date(dateString.slice(0, 10));
@@ -21,7 +24,7 @@ function Detailpage() {
   };
 
   //el.id랑 비교해서 일치하는것 구분해서 input창으로 바꾸기 ==> 수정 버튼 클릭시 edtiOn 에 아이디들어옴
-  const [editOn, setEditOn] = useState("");
+  const [editOn, setEditOn] = useState(false);
   // 수정완료시 input창에 작성한 값 받아오기
   const [input, setInput] = useState("");
 
@@ -30,107 +33,117 @@ function Detailpage() {
     setInput({ ...input, [name]: value });
   };
 
+  const onDeleteDiary = (diaryId) => {
+    dispatch(__deleteDiaries(diaryId));
+  };
+
   //수정완료버튼
-  const onEditComplete = (diaryId) => {
-    dispatch(
-      __putDiaries({ id: diaryId, title: input.title, content: input.content })
-    );
+  const onEditComplete = () => {
+    dispatch(__putDiaries({ title: input.title, content: input.content }));
     // 빈값으로 변경해줘야 일치하는 아이디 없이 input창으로 보여주는거 없애기
-    setEditOn("");
+    setEditOn(false);
   };
 
   useEffect(() => {
     dispatch(__getDiaries(diaryId));
-  }, [dispatch, diaryId]);
+    dispatch(__putDiaries({ title: input.title, content: input.content }));
+  }, [{ title: input.title, content: input.content }]);
+
+  const onClickMainHandler = () => {
+    navigate("/mainpage");
+  };
 
   return (
     <>
-      <form>
+      <div>
         <StPostContainer>
-          {diary?.map((el) => {
-            return el.id === editOn ? (
-              <StPostSubContainer key={`detail_${el.id}`}>
-                <StHeaderContainer>
-                  <StDate>{transrateLocaleDate(`${diary.createdAt}`)}</StDate>
-                  <StWeather>
-                    <img
-                      src={`http://openweathermap.org/img/wn/${weatherAPI.icon}@2x.png`}
-                    />
-                    <div>{weatherAPI.weather}</div>
-                    <div>{weatherAPI.city}</div>
-                    <div>{Math.round(weatherAPI.temp - 273.15)}℃</div>
-                  </StWeather>
-                </StHeaderContainer>
+          {editOn ? (
+            <StPostSubContainer>
+              <StHeaderContainer>
+                <StDate>
+                  {transrateLocaleDate(`${getDiary?.diary?.createdAt}`)}
+                </StDate>
+                <StWeather>
+                  <img
+                    src={`http://openweathermap.org/img/wn/${getDiary?.weatherAPI?.icon}@2x.png`}
+                  />
+                  <div>{getDiary?.weatherAPI?.weather}</div>
+                  <div>{getDiary?.weatherAPI?.city}</div>
+                  <div>{Math.round(getDiary?.weatherAPI.temp - 273.15)}℃</div>
+                </StWeather>
+              </StHeaderContainer>
 
-                <StTittleContainer>
-                  <div>제목:</div>
+              <StTittleContainer>
+                <div>제목:</div>
 
-                  <StTittle>
-                    <StEditInput
-                      type="text"
-                      name="title"
-                      value={input.title}
-                      onChange={onEditChangeHandler}
-                    ></StEditInput>
-                  </StTittle>
-                </StTittleContainer>
-                <StCanvas>
-                  <img src={diary.image} />
-                </StCanvas>
-                <StContentContainer>
-                  <StEditTextArea
-                    name="content"
-                    value={input.content}
+                <StTittle>
+                  <StEditInput
+                    type="text"
+                    name="title"
+                    placeholder="수정해보자"
+                    value={input.title || ""}
                     onChange={onEditChangeHandler}
-                  ></StEditTextArea>
-                </StContentContainer>
-                <StButtonContainer>
-                  <StButton onClick={() => onEditComplete(el.id)}>
-                    수정완료
-                  </StButton>
-                  <StButton onClick={() => setEditOn("")}>취소</StButton>
-                </StButtonContainer>
-              </StPostSubContainer>
-            ) : (
-              <StPostSubContainer key={`detail_${el.id}`}>
-                <StHeaderContainer>
-                  <StDate>{transrateLocaleDate(`${diary.createdAt}`)}</StDate>
-                  <StWeather>
-                    <img
-                      src={`http://openweathermap.org/img/wn/${weatherAPI.icon}@2x.png`}
-                    />
-                    <div>{weatherAPI.weather}</div>
-                    <div>{weatherAPI.city}</div>
-                    <div>{Math.round(weatherAPI.temp - 273.15)}℃</div>
-                  </StWeather>
-                </StHeaderContainer>
+                  ></StEditInput>
+                </StTittle>
+              </StTittleContainer>
+              <StCanvas>
+                <img src={getDiary?.diary?.image} />
+              </StCanvas>
+              <StContentContainer>
+                <StEditTextArea
+                  name="content"
+                  placeholder="수정해보자"
+                  value={input.content || ""}
+                  onChange={onEditChangeHandler}
+                ></StEditTextArea>
+              </StContentContainer>
+              <StButtonContainer>
+                <StButton onClick={onEditComplete}>수정완료</StButton>
+                <StButton onClick={() => setEditOn("")}>취소</StButton>
+                <StButton onClick={onClickMainHandler}>메인으로</StButton>
+              </StButtonContainer>
+            </StPostSubContainer>
+          ) : (
+            <StPostSubContainer>
+              <StHeaderContainer>
+                <StDate>
+                  {transrateLocaleDate(`${getDiary?.diary?.createdAt}`)}
+                </StDate>
+                <StWeather>
+                  <img
+                    src={`http://openweathermap.org/img/wn/${getDiary?.weatherAPI?.icon}@2x.png`}
+                  />
+                  <div>{getDiary?.weatherAPI?.weather}</div>
+                  <div>{getDiary?.weatherAPI?.city}</div>
+                  <div>{Math.round(getDiary?.weatherAPI?.temp - 273.15)}℃</div>
+                </StWeather>
+              </StHeaderContainer>
 
-                <StTittleContainer>
-                  <div>제목:</div>
+              <StTittleContainer>
+                <div>제목:</div>
 
-                  <StTittle>{el.title}</StTittle>
-                </StTittleContainer>
-                <StCanvas>
-                  <img src={diary.image} />
-                </StCanvas>
-                <StContentContainer>{el.content}</StContentContainer>
-                <StButtonContainer>
-                  <StButton
-                    onClick={() => {
-                      setEditOn(el.id);
-                      setInput(el.content);
-                    }}
-                  >
-                    수정
-                  </StButton>
-                  <StButton>삭제</StButton>
-                </StButtonContainer>
-              </StPostSubContainer>
-            );
-          })}
+                <StTittle>{getDiary?.diary?.title}</StTittle>
+              </StTittleContainer>
+              <StCanvas>
+                <img src={getDiary?.diary?.image} />
+              </StCanvas>
+              <StContentContainer>
+                {getDiary?.diary?.content}
+              </StContentContainer>
+              <StButtonContainer>
+                <StButton
+                  onClick={() => {
+                    setEditOn(true);
+                  }}
+                >
+                  수정
+                </StButton>
+                <StButton onClick={onDeleteDiary}>삭제</StButton>
+              </StButtonContainer>
+            </StPostSubContainer>
+          )}
         </StPostContainer>
-        ;
-      </form>
+      </div>
     </>
   );
 }
@@ -220,6 +233,7 @@ const StButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
+  margin-bottom: 10px;
 `;
 const StButton = styled.button`
   width: 30%;
@@ -232,17 +246,16 @@ const StButton = styled.button`
 `;
 
 const StEditInput = styled.input`
-  width: 70%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   border: 2px solid #d3d3d3;
   border-radius: 10px;
   font-weight: 500;
   font-size: 1.5rem;
-  margin-top: 10px;
 `;
 const StEditTextArea = styled.textarea`
-  width: 70%;
-  height: 25%;
+  width: 100%;
+  height: 100%;
   border: 2px solid #d3d3d3;
   border-radius: 10px;
   font-weight: 500;
