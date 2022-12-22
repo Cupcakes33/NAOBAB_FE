@@ -111,7 +111,9 @@ export const __deleteDiaries = createAsyncThunk(
       console.log(data);
       if (data.status === 201) {
         alert("일기가 사라졌어요!");
-        window.location.replace("http://naobab-fe.vercel.app/mainpage");
+        window.location.replace(
+          "https://mini-project-naobab.vercel.app/mainpage"
+        );
       }
       return thunkAPI.fulfillWithValue();
     } catch (err) {
