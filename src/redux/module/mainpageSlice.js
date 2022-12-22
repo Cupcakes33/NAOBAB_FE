@@ -55,10 +55,9 @@ export const getAsyncUser = createAsyncThunk(
 export const putAsyncUser = createAsyncThunk(
   "main/putAsyncUser",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const updateUserData = await instance.put(`api/userInfo`, payload);
-      console.log(updateUserData);
+
       if (updateUserData.status === 201) {
         alert(updateUserData.data.message);
         window.location.replace("http://localhost:3000/mainpage");
