@@ -55,6 +55,7 @@ const StyledCardTextWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
   h1 {
     color: ${(props) => props.theme.color.__icon_c2};
   }
