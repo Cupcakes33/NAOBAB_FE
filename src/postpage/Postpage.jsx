@@ -114,7 +114,7 @@ function Postpage() {
     );
 
     const diaryData = await instance.post("api/diary", formData);
-    console.log(diaryData);
+    
 
     setInput({
       title: "",

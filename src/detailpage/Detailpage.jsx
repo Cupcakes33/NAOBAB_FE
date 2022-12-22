@@ -13,7 +13,7 @@ function Detailpage() {
   const navigate = useNavigate();
 
   const { diaryId } = useParams();
-  console.log(diaryId);
+  
   const getDiary = useSelector((state) => state.diaries.diary);
 
   const transrateLocaleDate = (dateString) => {
